@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PC端多输入视力参考测试网页 - 演示型近似参考视力自测" />
+    <title>视力参考测试</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <script type="module" crossorigin>var ht=Object.defineProperty;var mt=(i,t,e)=>t in i?ht(i,t,{enumerable:!0,configurable:!0,writable:!0,value:e}):i[t]=e;var l=(i,t,e)=>mt(i,typeof t!="symbol"?t+"":t,e);(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const n of document.querySelectorAll('link[rel="modulepreload"]'))s(n);new MutationObserver(n=>{for(const a of n)if(a.type==="childList")for(const o of a.addedNodes)o.tagName==="LINK"&&o.rel==="modulepreload"&&s(o)}).observe(document,{childList:!0,subtree:!0});function e(n){const a={};return n.integrity&&(a.integrity=n.integrity),n.referrerPolicy&&(a.referrerPolicy=n.referrerPolicy),n.crossOrigin==="use-credentials"?a.credentials="include":n.crossOrigin==="anonymous"?a.credentials="omit":a.credentials="same-origin",a}function s(n){if(n.ep)return;n.ep=!0;const a=e(n);fetch(n.href,a)}})();const V=4.7,L=4,q=5.3,j=.1,D=20,Q=5,vt=2,gt=10,ft=200,F="visionTest.history.v1",st="visionTest.mascot.v1",it="visionTest.stars.v1",nt={up:["上","上面","向上","朝上"],down:["下","下面","向下","朝下"],left:["左","左边","向左","朝左"],right:["右","右边","向右","朝右"]},at=["嗨！我是小瞳，欢迎来到眼健康乐园！","眨眨眼，休息一下吧～","完成各个板块的体验可以获得星光哦！","攒够星光可以给我换装呢～","测完视力记得放松一下眼睛！","你今天的眼睛还好吗？","深呼吸，慢慢来，不着急～","健康问答通过后有限定装扮等着你！","护眼从现在开始，一点都不晚～","做完测试记得远眺休息一下！"],bt=[{name:"深棕",value:"#5C4033"},{name:"琥珀",value:"#B8860B"},{name:"湖蓝",value:"#4682B4"},{name:"翡翠",value:"#2E8B57"},{name:"紫晶",value:"#7B5BA6"},{name:"墨黑",value:"#1A1A1A"}],dt=[{id:"star",name:"星星贴",starCost:0},{id:"hat",name:"小红帽",starCost:2},{id:"monocle",name:"单片镜",starCost:3},{id:"headphone",name:"耳机",starCost:4}],W=[{id:"breathe",name:"深呼吸",description:"跟随圆圈缩放，吸气…呼气…",duration:20,icon:"circle"},{id:"skystar",name:"看星星",description:"静静欣赏夜空中缓缓飘动的星光",duration:60,icon:"star"},{id:"bubbles",name:"吹泡泡",description:"观看泡泡缓缓升起又消散",duration:60,icon:"bubble"}],yt=[{id:"rain",name:"雨声",desc:"细密雨落，最经典的助眠类白噪音"},{id:"ocean",name:"海浪",desc:"缓慢起伏的浪声，适合思虑多时放松"},{id:"pink",name:"粉红噪音",desc:"比白噪音更柔和，研究显示更助眠"},{id:"brown",name:"褐噪音",desc:"低频轰鸣，像远风或机舱"},{id:"white",name:"白噪音",desc:"均匀嘶嘶声，屏蔽环境杂音"}],kt=[{name:"Pixabay · 轻柔雨声",url:"https://pixabay.com/sound-effects/nature-gentle-rain-for-relaxation-and-sleep-337279/"},{name:"Pixabay · 远处雷雨",url:"https://pixabay.com/sound-effects/nature-steady-rain-with-rolling-thunder-in-the-distance-341895/"},{name:"Mixkit · 舒缓音乐合集",url:"https://mixkit.co/free-stock-music/mood/soothing/"},{name:"Mixkit · 水下/环境",url:"https://mixkit.co/free-stock-music/tag/underwater/"}],Et=4789,M=`http://127.0.0.1:${Et}`,wt=[{id:"vision",title:"视力测试",description:"多输入方式 E 视标视力参考测试",icon:"👁",state:"visionHome",starReward:3,accent:"#3B82F6"},{id:"relax",title:"放松一下",description:"深呼吸、看星星、吹泡泡，让眼睛歇歇",icon:"🌙",state:"relaxMenu",starReward:1,accent:"#8B5CF6"},{id:"sleep",title:"助眠",description:"雨声海浪等舒缓音，定时休眠省电",icon:"😴",state:"sleepAid",starReward:0,accent:"#6366F1"},{id:"exercise",title:"眼保健操",description:"引导式眼部放松运动，缓解疲劳",icon:"✋",state:"eyeExercises",starReward:1,accent:"#10B981"},{id:"articles",title:"护眼知识",description:"用眼习惯、营养护眼、定期检查科普",icon:"📖",state:"articles",starReward:1,accent:"#F59E0B"},{id:"quiz",title:"健康问答",description:"眼健康知识问答，通过解锁限定装扮",icon:"🎯",state:"quiz",starReward:5,accent:"#EF4444"},{id:"about",title:"关于我们",description:"项目介绍与创作者社媒",icon:"💬",state:"about",starReward:0,accent:"#6B7280"}],ot=60,$t=[{id:1,question:"使用电脑时，推荐的屏幕距离大约是多少？",options:["30 cm","50-70 cm","100 cm 以上","越近越好"],correctIndex:1,explanation:"电脑屏幕应距离眼睛 50-70 cm，约一臂距离。"},{id:2,question:"遵循「20-20-20」法则，每用眼 20 分钟应看多远的物体 20 秒？",options:["2 米","10 米","20 英尺（约6米）","不需要看远处"],correctIndex:2,explanation:"20-20-20 法则：每 20 分钟看 20 英尺（约 6 米）外的物体 20 秒。"},{id:3,question:"以下哪种光线环境对眼睛最不友好？",options:["自然光","柔和的台灯","全黑环境下看手机","均匀的室内照明"],correctIndex:2,explanation:"全黑环境下看手机，屏幕与环境的亮度差过大，容易引起视疲劳。"},{id:4,question:"正常成年人建议多久做一次眼部检查？",options:["不需要检查","每年 1-2 次","每 5 年","只有看不清时才去"],correctIndex:1,explanation:"成年人建议每年进行 1-2 次眼部检查，及早发现潜在问题。"},{id:5,question:"以下哪种营养素对保护视力有帮助？",options:["叶黄素","糖分","食盐","咖啡因"],correctIndex:0,explanation:"叶黄素存在于黄斑区，有助于过滤蓝光、保护视网膜。"},{id:6,question:"长时间盯屏幕导致眼睛干涩，最有效的缓解方式是？",options:["用力揉眼","主动眨眼并远眺","滴任意眼药水","继续看屏幕"],correctIndex:1,explanation:"主动眨眼可以均匀分布泪膜，远眺能放松睫状肌。"},{id:7,question:"儿童青少年每天户外活动多长时间有助于预防近视？",options:["10 分钟","30 分钟","至少 1 小时","不需要户外活动"],correctIndex:2,explanation:"研究表明每天 1 小时以上的户外活动能有效预防近视发展。"},{id:8,question:"关于视力测试中的「E 视标」，以下说法正确的是？",options:["只有 E 字","基于 5×5 网格的标准化视标","随机图形","彩色图案"],correctIndex:1,explanation:"E 视标基于 5×5 网格，笔画和间隙各占 1/5，是标准化的视力检查工具。"},{id:9,question:"夜间使用电子设备时，以下哪种做法最护眼？",options:["调到最高亮度","开启护眼模式/夜间模式","关闭所有灯光","离屏幕更近"],correctIndex:1,explanation:"护眼模式能减少蓝光输出，降低对褪黑素分泌的影响。"},{id:10,question:"以下哪个不是近视的常见早期信号？",options:["看远处模糊","频繁眯眼","眼睛干涩疲劳","听力下降"],correctIndex:3,explanation:"听力下降与近视无关。看远模糊、眯眼、眼疲劳是近视的常见信号。"}],U=[{id:"art-20-20-20",title:"20-20-20 法则：最简单的护眼习惯",category:"用眼习惯",readTime:"2 分钟",content:["长时间盯着屏幕是现代人视疲劳的头号元凶。美国眼科学会推荐的 20-20-20 法则是最简单、最容易坚持的护眼习惯。","规则很简单：每使用电子屏幕 20 分钟，就把视线移到 20 英尺（约 6 米）以外的物体上，保持 20 秒。","在这 20 秒里，你的睫状肌会从持续紧张的「对焦」状态中放松下来，泪膜也会重新均匀分布在眼球表面。","可以在手机或电脑上设置每 20 分钟一次的提醒。坚持一周，你会发现眼睛没那么干涩了。"]},{id:"art-screen-distance",title:"屏幕距离与高度：被忽略的细节",category:"用眼环境",readTime:"2 分钟",content:["屏幕离眼睛太近，睫状肌需要更用力地对焦，时间一长就会酸痛。电脑屏幕的理想距离是 50-70 厘米，大约一臂长。","屏幕高度也很关键。屏幕中心应略低于视线水平 10-15 度，这样眼睑自然微垂，减少眼球暴露面积，降低蒸发。","手机阅读时尽量举高一些，不要低头驼背——既保护颈椎，也减少眼睛与屏幕的距离差。","如果屏幕太小、字太小，不要凑近看，而是放大字体或使用更大屏幕。"]},{id:"art-lighting",title:"光线环境：亮不等于好",category:"用眼环境",readTime:"3 分钟",content:["很多人以为越亮越好，其实过强的光线同样会伤害眼睛。理想的阅读光线是均匀、柔和、无眩光的。","白天优先利用自然光，但避免阳光直射屏幕或眼睛。晚上使用台灯时，不要只开台灯而关掉房间灯——明暗对比过大会加重视疲劳。","台灯应放在书写手的对侧（右撇子放左侧），灯罩遮住灯泡，避免直射眼睛。","色温方面，4000K 左右的暖白光比较适合长时间阅读，既不昏暗也不刺眼。"]},{id:"art-nutrition",title:"吃出来的好视力：护眼营养素",category:"营养护眼",readTime:"3 分钟",content:["眼睛也需要「吃饭」。以下几种营养素对维持眼部健康至关重要：","叶黄素与玉米黄质：存在于菠菜、羽衣甘蓝、玉米等深绿色和黄色蔬菜中，是黄斑区的重要成分，能过滤有害蓝光。","维生素 A：动物肝脏、胡萝卜、南瓜中含量丰富，是视紫红质的原料，缺乏会导致夜盲症。","Omega-3 脂肪酸：深海鱼、亚麻籽中含量高，有助于维持泪膜稳定，缓解干眼。","花青素：蓝莓、紫薯、桑葚中含量丰富，能促进视网膜视紫红质的再生。","均衡饮食比单一补充剂更有效。多吃彩虹色的蔬菜水果，眼睛会感谢你。"]},{id:"art-checkup",title:"定期检查：眼睛也需要「体检」",category:"定期检查",readTime:"2 分钟",content:["很多眼部疾病在早期没有明显症状，等到发现时可能已经造成不可逆的损伤。定期检查是早发现、早治疗的关键。","成年人建议每年进行一次全面的眼科检查，包括视力、眼压、眼底等。","高度近视者（600 度以上）是视网膜脱离、青光眼等疾病的高危人群，建议每半年检查一次眼底。","糖尿病患者更需要密切关注眼底变化，糖尿病视网膜病变是致盲的主要原因之一。","儿童从 3 岁起就应建立屈光发育档案，跟踪视力变化，及早干预近视。"]},{id:"art-dry-eye",title:"干眼症：现代人的「流行病」",category:"常见问题",readTime:"3 分钟",content:["如果你经常觉得眼睛干涩、异物感、畏光、容易流泪，可能已经患上了干眼症。","正常情况下，我们每分钟眨眼 15-20 次。但盯着屏幕时，眨眼次数会骤降到 5-7 次，泪膜来不及更新，眼睛自然干涩。","缓解干眼的第一步是「主动眨眼」——有意识地完整闭合眼睑，像挤牙膏一样把泪液均匀涂抹在眼球表面。","可以使用不含防腐剂的人工泪液润滑，但避免过度依赖含血管收缩剂的「去红」眼药水。","如果环境干燥，可以在桌上放一个加湿器。空调出风口不要直吹面部。","症状持续不缓解时，请及时就医，干眼也可能与其他疾病相关。"]}],I=[{name:"闭眼深呼吸",duration:15,instruction:"轻轻闭眼，深吸气 3 秒，缓慢呼气 3 秒，放松全身。"},{name:"用力眨眼",duration:20,instruction:"用力闭眼 2 秒，然后睁开 2 秒，重复 5 次，促进泪液分泌。"},{name:"远近调节",duration:30,instruction:"看远处（6 米外）5 秒，再看近处（30 厘米）5 秒，交替进行。"},{name:"眼球转动",duration:30,instruction:"眼球缓慢顺时针转 3 圈，再逆时针转 3 圈，幅度尽量大。"},{name:"穴位按压",duration:30,instruction:"双手搓热，用指腹轻按攒竹、睛明、四白穴各 5 秒，重复 2 次。"},{name:"掌心捂眼",duration:20,instruction:"双手搓热后捂住闭着的眼睛，感受掌心温度，放松 20 秒。"}],Tt=[{name:"创作者 A",platform:"GitHub",url:"https://github.com",icon:"🐙"},{name:"创作者 B",platform:"Bilibili",url:"https://bilibili.com",icon:"📺"},{name:"创作者 C",platform:"知乎",url:"https://zhihu.com",icon:"💡"},{name:"创作者 D",platform:"微博",url:"https://weibo.com",icon:"🐦"}];class Ct{constructor(){l(this,"currentGrade",V);l(this,"rightRecords",[]);l(this,"leftRecords",[]);l(this,"currentEye","right");l(this,"locked",!1);l(this,"currentDirection",null);l(this,"maxGradeStreak",0)}startEye(t){return this.currentEye=t,this.currentGrade=V,this.locked=!1,this.maxGradeStreak=0,t==="right"?this.rightRecords=[]:this.leftRecords=[],this.currentDirection=this.randomDirection(),{grade:this.currentGrade,direction:this.currentDirection}}getCurrentQuestion(){return(this.currentEye==="right"?this.rightRecords:this.leftRecords).length>=D?null:(this.currentDirection||(this.currentDirection=this.randomDirection()),{grade:this.currentGrade,direction:this.currentDirection})}submitAnswer(t){if(this.locked||!this.currentDirection)return{accepted:!1,finished:!1,eyeResult:null};this.locked=!0;const e=t===this.currentDirection,s={grade:this.currentGrade,correctDirection:this.currentDirection,userDirection:t,correct:e};this.currentEye==="right"?this.rightRecords.push(s):this.leftRecords.push(s),e?this.currentGrade=Math.min(q,Math.round((this.currentGrade+j)*10)/10):this.currentGrade=Math.max(L,Math.round((this.currentGrade-j)*10)/10),e&&this.currentGrade>=q?this.maxGradeStreak++:this.maxGradeStreak=0,this.currentDirection=this.randomDirection();const n=this.currentEye==="right"?this.rightRecords:this.leftRecords,a=this.maxGradeStreak>=Q,o=n.length>=D||a;return this.locked=!1,o?{accepted:!0,finished:!0,eyeResult:this.buildEyeResult()}:{accepted:!0,finished:!1,eyeResult:null}}buildEyeResult(){const t=this.currentEye==="right"?this.rightRecords:this.leftRecords;if(t.length===0)return this.makeEyeResult(L);const e={};for(const n of t){const a=Math.round(n.grade*10)/10;e[a]||(e[a]={correct:0,total:0}),e[a].total++,n.correct&&e[a].correct++}let s=L;for(let n=L;n<=q;n+=j){const a=Math.round(n*10)/10,o=e[a];o&&o.correct>o.total-o.correct&&(s=a)}if(s<=L){const n=t.filter(a=>a.correct).map(a=>a.grade);n.length>0&&(s=Math.max(...n))}return s=Math.round(s*10)/10,this.makeEyeResult(s)}makeEyeResult(t){const e=Math.pow(10,t-4),s=e<.1?"0.1":e.toFixed(2).replace(/\.?0+$/,"");return{grade:t,fivePoint:t.toFixed(1),decimal:s,deviceLimit:!1}}randomDirection(){const t=["up","down","left","right"];if(!this.currentDirection)return t[Math.floor(Math.random()*4)];const e=t.filter(s=>s!==this.currentDirection);return e[Math.floor(Math.random()*e.length)]}unlock(){this.locked=!1}isLocked(){return this.locked}isFinished(){return(this.currentEye==="right"?this.rightRecords:this.leftRecords).length>=D||this.maxGradeStreak>=Q}reset(){this.currentGrade=V,this.rightRecords=[],this.leftRecords=[],this.locked=!1,this.currentDirection=null,this.maxGradeStreak=0}getProgress(){return{currentQuestion:(this.currentEye==="right"?this.rightRecords:this.leftRecords).length+1,totalQuestions:D,currentGrade:this.currentGrade,maxGradeStreak:this.maxGradeStreak,maxGradeStreakNeeded:Q}}}class It{constructor(t){l(this,"devicePixelRatio");this.devicePixelRatio=t??window.devicePixelRatio??1}getOptotypeHeightPx(t){const n=8*Math.pow(10,5-t)*vt;return Math.round(Math.max(gt,Math.min(ft,n)))}getStrokeWidthPx(t){return this.getOptotypeHeightPx(t)/5}getStrokeDevicePx(t){return this.getStrokeWidthPx(t)*this.devicePixelRatio}getDevicePixelRatio(){return this.devicePixelRatio}updateDevicePixelRatio(){this.devicePixelRatio=window.devicePixelRatio??1}}class _{static render(t,e="right",s="#000"){const n=t/5,a=[{x:0,y:0,w:5,h:1},{x:0,y:4,w:5,h:1},{x:0,y:0,w:1,h:5},{x:0,y:2,w:3,h:1}],c={right:0,down:90,left:180,up:270}[e],r=a.map(d=>{const u=d.x*n,v=d.y*n,g=d.w*n,f=d.h*n;return`<rect x="${u.toFixed(2)}" y="${v.toFixed(2)}" width="${g.toFixed(2)}" height="${f.toFixed(2)}" fill="${s}"/>`}).join("");return`<svg xmlns="http://www.w3.org/2000/svg" width="${t.toFixed(2)}" height="${t.toFixed(2)}" viewBox="0 0 ${t.toFixed(2)} ${t.toFixed(2)}" style="display:block;"><g transform="rotate(${c} ${(t/2).toFixed(2)} ${(t/2).toFixed(2)})">`+r+"</g></svg>"}static createElement(t,e,s="#000"){const n=document.createElement("div");return n.innerHTML=this.render(t,e,s),n.firstElementChild}}class rt{constructor(){l(this,"maxRecords",10);l(this,"storageAvailable");this.storageAvailable=this.checkStorageAvailable()}checkStorageAvailable(){try{const t="__visionTest_test__";return localStorage.setItem(t,"1"),localStorage.removeItem(t),!0}catch{return!1}}isAvailable(){return this.storageAvailable}getAll(){if(!this.storageAvailable)return[];try{const t=localStorage.getItem(F);if(!t)return[];const e=JSON.parse(t);return Array.isArray(e)?e.filter(n=>this.validateRecord(n)).slice(0,this.maxRecords):[]}catch{return[]}}validateRecord(t){return!(!t||typeof t!="object"||typeof t.id!="string"||typeof t.timestamp!="string"||!this.validateEyeResult(t.rightEye)||!this.validateEyeResult(t.leftEye))}validateEyeResult(t){return!(!t||typeof t!="object"||typeof t.fivePoint!="string"||typeof t.decimal!="string"||typeof t.deviceLimit!="boolean"||typeof t.grade!="number"||t.grade<L-.01||t.grade>q+.01)}save(t){if(!this.storageAvailable)return!1;try{const e=this.getAll();if(e.some(n=>n.id===t.id))return!0;e.unshift(t);const s=e.slice(0,this.maxRecords);return localStorage.setItem(F,JSON.stringify(s)),!0}catch{return!1}}delete(t){if(this.storageAvailable)try{const s=this.getAll().filter(n=>n.id!==t);localStorage.setItem(F,JSON.stringify(s))}catch{}}clearAll(){if(this.storageAvailable)try{localStorage.removeItem(F)}catch{}}static generateId(){return`test_${Date.now()}_${Math.random().toString(36).substring(2,9)}`}}class ut{static initMap(){if(!this.wordToDirection){this.wordToDirection=new Map;for(const t of Object.keys(nt))for(const e of nt[t])this.wordToDirection.set(e,t)}}static normalize(t){if(this.initMap(),!t)return null;const e=t.trim().replace(/[，。！？\s,.\!?]/g,""),s=this.wordToDirection.get(e);if(s)return s;for(const[n,a]of this.wordToDirection)if(e.includes(n))return a;return null}static isValid(t){return this.normalize(t)!==null}}l(ut,"wordToDirection");const St=600,N=class N{constructor(){l(this,"recognition",null);l(this,"callbacks",null);l(this,"running",!1);l(this,"starting",!1);l(this,"lastResultIndex",-1);l(this,"lastResultTime",0);this.initRecognition()}static isSupported(){if(this.supported!==null)return this.supported;const t=window.SpeechRecognition||window.webkitSpeechRecognition;return this.supported=!!t,this.supported}initRecognition(){const t=window.SpeechRecognition||window.webkitSpeechRecognition;t&&(this.recognition=new t,this.recognition.lang="zh-CN",this.recognition.continuous=!0,this.recognition.interimResults=!0,this.recognition.maxAlternatives=1,this.recognition.onstart=()=>{var e;this.starting=!1,(e=this.callbacks)==null||e.onStart()},this.recognition.onresult=e=>{var n,a;const s=e.results;for(let o=this.lastResultIndex+1;o<s.length;o++){const c=s[o];if(!c.isFinal)continue;const r=Date.now();if(r-this.lastResultTime<St){this.lastResultIndex=o;continue}this.lastResultTime=r,this.lastResultIndex=o;const d=c[0].transcript.trim();if(!d)continue;const u=ut.normalize(d);u?(n=this.callbacks)==null||n.onDirection(u):(a=this.callbacks)==null||a.onInvalidInput(d)}},this.recognition.onerror=e=>{var n,a,o,c;const s=e.error||"unknown";s==="not-allowed"||s==="service-not-allowed"?(this.running=!1,(n=this.callbacks)==null||n.onError("mic_denied")):s==="network"?(a=this.callbacks)==null||a.onError("network"):s==="no-speech"?(o=this.callbacks)==null||o.onTimeout():s!=="aborted"&&((c=this.callbacks)==null||c.onError(s))},this.recognition.onend=()=>{var e;(e=this.callbacks)==null||e.onEnd(),this.running&&window.setTimeout(()=>this.safeStart(),300)})}setCallbacks(t){this.callbacks=t}start(){N.isSupported()&&(this.running=!0,this.safeStart())}stop(){if(this.running=!1,this.recognition)try{this.recognition.stop()}catch{}}pause(){if(this.recognition)try{this.recognition.stop()}catch{}}resume(){this.running&&this.safeStart()}isListening(){return this.running}safeStart(){if(!(!this.recognition||this.starting)){this.starting=!0;try{this.recognition.start()}catch{this.starting=!1,this.running&&window.setTimeout(()=>this.safeStart(),500)}}}};l(N,"supported",null);let G=N;class xt{constructor(){l(this,"callbacks",null);l(this,"active",!1);l(this,"handler",null)}setCallbacks(t){this.callbacks=t}start(){this.active||(this.active=!0,this.handler=t=>{if(t.repeat)return;let e=null;const s=t.key,n=t.keyCode||t.which;if(s==="ArrowUp"||n===38)e="up";else if(s==="ArrowDown"||n===40)e="down";else if(s==="ArrowLeft"||n===37)e="left";else if(s==="ArrowRight"||n===39)e="right";else return;t.preventDefault(),t.stopPropagation(),e&&this.callbacks&&this.callbacks.onDirection(e)},window.addEventListener("keydown",this.handler,!0))}stop(){!this.active||!this.handler||(this.active=!1,window.removeEventListener("keydown",this.handler,!0),this.handler=null)}isActive(){return this.active}}class O{constructor(){l(this,"callbacks",null);l(this,"active",!1);l(this,"clickHandler",null);l(this,"container",null)}setCallbacks(t){this.callbacks=t}attach(t){this.container=t}start(){this.active||!this.container||(this.active=!0,this.clickHandler=t=>{var r,d,u,v;if(!this.container)return;const e=this.container.getBoundingClientRect(),s=e.left+e.width/2,n=e.top+e.height/2,a=t.clientX-s,o=t.clientY-n,c=this.classifyClick(a,o,e.width);(d=(r=this.callbacks)==null?void 0:r.onClickPosition)==null||d.call(r,t.clientX,t.clientY,c),c.type==="direction"?(u=this.callbacks)==null||u.onDirection(c.direction):(v=this.callbacks)==null||v.onInvalidClick(c.reason)},this.container.addEventListener("click",this.clickHandler))}stop(){!this.active||!this.clickHandler||!this.container||(this.active=!1,this.container.removeEventListener("click",this.clickHandler),this.clickHandler=null)}static classifyClick(t,e,s){return O.classifyClickWithESize(t,e,s,0)}static classifyClickWithESize(t,e,s,n){const a=Math.max(6,s*.008),o=Math.abs(t),c=Math.abs(e);if(Math.hypot(o,c)<=8)return{type:"invalid",reason:"boundary"};if(Math.abs(o-c)<=a)return{type:"invalid",reason:"boundary"};let r;return o>c?r=t>0?"right":"left":r=e>0?"down":"up",{type:"direction",direction:r}}classifyClick(t,e,s){var a;const n=parseFloat(((a=this.container)==null?void 0:a.dataset.eSize)||"0");return O.classifyClickWithESize(t,e,s,n)}setESize(t){this.container&&(this.container.dataset.eSize=t.toString())}isActive(){return this.active}}class Rt{constructor(){l(this,"audioContext",null);l(this,"initialized",!1)}init(){if(!this.initialized)try{const t=window.AudioContext||window.webkitAudioContext;t&&(this.audioContext=new t,this.initialized=!0)}catch{}}resume(){this.audioContext&&this.audioContext.state==="suspended"&&this.audioContext.resume()}play(t){if(this.audioContext||this.init(),!!this.audioContext)switch(this.resume(),t){case"inputAccepted":this.playInputAccepted();break;case"invalidClick":this.playInvalidClick();break;case"relaxComplete":this.playRelaxComplete();break}}playInputAccepted(){const t=this.audioContext,e=t.createOscillator(),s=t.createGain();e.type="sine",e.frequency.value=440,s.gain.setValueAtTime(0,t.currentTime),s.gain.linearRampToValueAtTime(.15,t.currentTime+.01),s.gain.exponentialRampToValueAtTime(.001,t.currentTime+.1),e.connect(s),s.connect(t.destination),e.start(),e.stop(t.currentTime+.1)}playInvalidClick(){const t=this.audioContext,e=t.createOscillator(),s=t.createGain();e.type="sine",e.frequency.value=150,s.gain.setValueAtTime(0,t.currentTime),s.gain.linearRampToValueAtTime(.2,t.currentTime+.01),s.gain.exponentialRampToValueAtTime(.001,t.currentTime+.08),s.gain.linearRampToValueAtTime(.2,t.currentTime+.1),s.gain.exponentialRampToValueAtTime(.001,t.currentTime+.18),e.connect(s),s.connect(t.destination),e.start(),e.stop(t.currentTime+.2)}playRelaxComplete(){const t=this.audioContext,e=t.createOscillator(),s=t.createGain();e.type="sine",e.frequency.setValueAtTime(523.25,t.currentTime),e.frequency.linearRampToValueAtTime(659.25,t.currentTime+.3),s.gain.setValueAtTime(0,t.currentTime),s.gain.linearRampToValueAtTime(.12,t.currentTime+.05),s.gain.exponentialRampToValueAtTime(.001,t.currentTime+.8),e.connect(s),s.connect(t.destination),e.start(),e.stop(t.currentTime+.8)}destroy(){this.audioContext&&(this.audioContext.close(),this.audioContext=null,this.initialized=!1)}}class Lt{constructor(t){l(this,"duration");l(this,"remaining");l(this,"running",!1);l(this,"started",!1);l(this,"timerId",null);l(this,"callbacks",null);l(this,"lastTickTime",0);l(this,"visibilityHandler",null);this.duration=t,this.remaining=t}setCallbacks(t){this.callbacks=t}start(){this.running||(this.running=!0,this.started=!0,this.lastTickTime=Date.now(),this.tick(),this.setupVisibilityHandler())}tick(){var s,n;if(!this.running)return;const t=Date.now(),e=(t-this.lastTickTime)/1e3;if(this.lastTickTime=t,this.remaining=Math.max(0,this.remaining-e),(s=this.callbacks)==null||s.onTick(Math.ceil(this.remaining)),this.remaining<=0){this.running=!1,(n=this.callbacks)==null||n.onComplete();return}this.timerId=window.setTimeout(()=>this.tick(),100)}pause(){this.running&&(this.running=!1,this.timerId!==null&&(clearTimeout(this.timerId),this.timerId=null))}resume(){this.running||(this.running=!0,this.lastTickTime=Date.now(),this.tick())}reset(){this.pause(),this.remaining=this.duration,this.running=!0,this.started=!0,this.lastTickTime=Date.now(),this.setupVisibilityHandler(),this.tick()}switchGame(t){this.pause(),this.duration=t,this.remaining=t,this.started=!1,this.removeVisibilityHandler()}isRunning(){return this.running}isStarted(){return this.started}getRemaining(){return Math.ceil(this.remaining)}getDuration(){return this.duration}setupVisibilityHandler(){this.visibilityHandler||(this.visibilityHandler=()=>{document.hidden&&this.running&&this.pause()},document.addEventListener("visibilitychange",this.visibilityHandler))}removeVisibilityHandler(){this.visibilityHandler&&(document.removeEventListener("visibilitychange",this.visibilityHandler),this.visibilityHandler=null)}destroy(){this.pause(),this.removeVisibilityHandler()}}class Mt{constructor(){l(this,"ctx",null);l(this,"master",null);l(this,"nodes",[]);l(this,"sources",[]);l(this,"dropletTimer",null);l(this,"lfoTimer",null);l(this,"fadeTimer",null);l(this,"current",null);l(this,"_volume",.5)}ensureCtx(){if(!this.ctx){const t=window.AudioContext||window.webkitAudioContext;this.ctx=new t,this.master=this.ctx.createGain(),this.master.gain.value=this._volume,this.master.connect(this.ctx.destination)}return this.ctx}setVolume(t){this._volume=Math.max(0,Math.min(1,t)),this.master&&this.ctx&&this.master.gain.setTargetAtTime(this._volume,this.ctx.currentTime,.05)}getVolume(){return this._volume}isPlaying(){return this.current!==null}getCurrent(){return this.current}play(t){const e=this.ensureCtx();switch(e.state==="suspended"&&e.resume(),this.stopNodes(),this.current=t,t){case"rain":this.buildRain();break;case"ocean":this.buildOcean();break;case"white":this.buildNoise("white");break;case"pink":this.buildNoise("pink");break;case"brown":this.buildNoise("brown");break}}stop(){this.stopNodes(),this.current=null}fadeOut(t,e){if(!this.master||!this.ctx){this.stop(),e==null||e();return}const s=this.ctx.currentTime;this.master.gain.cancelScheduledValues(s),this.master.gain.setValueAtTime(this.master.gain.value,s),this.master.gain.linearRampToValueAtTime(1e-4,s+t),this.fadeTimer=window.setTimeout(()=>{this.stop(),e==null||e()},t*1e3+100)}destroy(){this.stopNodes(),this.current=null,this.ctx&&(this.ctx.close(),this.ctx=null,this.master=null)}stopNodes(){this.dropletTimer!==null&&(clearInterval(this.dropletTimer),this.dropletTimer=null),this.lfoTimer!==null&&(clearInterval(this.lfoTimer),this.lfoTimer=null),this.fadeTimer!==null&&(clearTimeout(this.fadeTimer),this.fadeTimer=null);for(const t of this.sources)try{t.stop(),t.disconnect()}catch{}for(const t of this.nodes)try{t.disconnect()}catch{}this.sources=[],this.nodes=[]}makeNoiseBuffer(t){const e=this.ensureCtx(),s=Math.floor(e.sampleRate*2),n=e.createBuffer(1,s,e.sampleRate),a=n.getChannelData(0);if(t==="white")for(let o=0;o<s;o++)a[o]=Math.random()*2-1;else if(t==="pink"){let o=0,c=0,r=0,d=0,u=0,v=0,g=0;for(let f=0;f<s;f++){const m=Math.random()*2-1;o=.99886*o+m*.0555179,c=.99332*c+m*.0750759,r=.969*r+m*.153852,d=.8665*d+m*.3104856,u=.55*u+m*.5329522,v=-.7616*v-m*.016898,a[f]=(o+c+r+d+u+v+g+m*.5362)*.11,g=m*.115926}}else{let o=0;for(let c=0;c<s;c++){const r=Math.random()*2-1;o=(o+.02*r)/1.02,a[c]=o*3.5}}return n}loopSource(t){const s=this.ensureCtx().createBufferSource();return s.buffer=t,s.loop=!0,this.sources.push(s),s}buildNoise(t){const e=this.ensureCtx(),s=this.loopSource(this.makeNoiseBuffer(t)),n=e.createBiquadFilter();n.type="lowpass",n.frequency.value=t==="brown"?1e3:t==="pink"?4500:8e3;const a=e.createGain();a.gain.value=t==="brown"?.9:t==="pink"?.7:.5,s.connect(n),n.connect(a),a.connect(this.master),this.nodes.push(n,a),s.start()}buildRain(){const t=this.ensureCtx(),e=this.loopSource(this.makeNoiseBuffer("white")),s=t.createBiquadFilter();s.type="bandpass",s.frequency.value=1400,s.Q.value=.6;const n=t.createGain();n.gain.value=.35,e.connect(s),s.connect(n),n.connect(this.master),this.nodes.push(s,n),e.start();const a=t.createGain();a.gain.value=.18,a.connect(this.master),this.nodes.push(a),this.dropletTimer=window.setInterval(()=>{if(!this.ctx)return;const o=this.ctx.currentTime,c=this.ctx.createOscillator(),r=this.ctx.createGain();c.type="sine";const d=900+Math.random()*1400;c.frequency.setValueAtTime(d,o),c.frequency.exponentialRampToValueAtTime(d*.6,o+.12),r.gain.setValueAtTime(1e-4,o),r.gain.exponentialRampToValueAtTime(.25,o+.01),r.gain.exponentialRampToValueAtTime(1e-4,o+.18),c.connect(r),r.connect(a),c.start(o),c.stop(o+.2),this.nodes.push(c,r)},180+Math.random()*200)}buildOcean(){const t=this.ensureCtx(),e=this.loopSource(this.makeNoiseBuffer("brown")),s=t.createBiquadFilter();s.type="lowpass",s.frequency.value=600;const n=t.createGain();n.gain.value=.8,e.connect(s),s.connect(n),n.connect(this.master),this.nodes.push(s,n),e.start();const a=t.createOscillator();a.type="sine",a.frequency.value=.08;const o=t.createGain();o.gain.value=.35,a.connect(o),o.connect(n.gain),a.start(),this.sources.push(a),this.nodes.push(o)}}class At{constructor(){l(this,"engine",new Mt);l(this,"custom",null);l(this,"mode","procedural");l(this,"currentType",null);l(this,"currentCustomUrl","");l(this,"isPlayingFlag",!1);l(this,"timerId",null);l(this,"totalSec",0);l(this,"remainingSec",0);l(this,"tickCb",null);l(this,"overlay",null);l(this,"wasFullscreen",!1);l(this,"onExitLock",null);l(this,"lockEnabled",!1);l(this,"realLockEnabled",!1);l(this,"onEnd",null)}setVolume(t){this.engine.setVolume(t),this.custom&&(this.custom.volume=t)}getVolume(){return this.engine.getVolume()}playProcedural(t){this.mode="procedural",this.currentType=t,this.stopCustom(),this.engine.play(t),this.isPlayingFlag=!0}stopCustom(){if(this.custom)try{this.custom.pause()}catch{}}playCustom(t){this.mode="custom",this.currentCustomUrl=t,this.engine.stop(),this.custom||(this.custom=new Audio,this.custom.loop=!0),this.custom.src=t,this.custom.volume=this.engine.getVolume(),this.custom.play().catch(()=>{this.isPlayingFlag=!1}),this.isPlayingFlag=!0}pause(){var t;this.mode==="procedural"?this.engine.stop():(t=this.custom)==null||t.pause(),this.isPlayingFlag=!1}resume(){this.mode==="procedural"&&this.currentType?this.engine.play(this.currentType):this.mode==="custom"&&this.custom&&this.custom.play().catch(()=>{}),this.isPlayingFlag=!0}isPlaying(){return this.isPlayingFlag}currentMode(){return this.mode}currentType_(){return this.currentType}currentCustom(){return this.currentCustomUrl}setLockEnabled(t){this.lockEnabled=t}setRealLockEnabled(t){this.realLockEnabled=t}isLockEnabled(){return this.lockEnabled}isRealLockEnabled(){return this.realLockEnabled}checkHelper(){return fetch(`${M}/status`,{method:"GET",mode:"cors"}).then(t=>t.ok).catch(()=>!1)}async lockNow(){try{return(await fetch(`${M}/lock`,{method:"GET",mode:"cors"})).ok}catch{return!1}}async serviceStatus(){try{const e=await(await fetch(`${M}/service-status`,{method:"GET",mode:"cors"})).json();return{installed:!!e.installed,running:!!e.running}}catch{return{installed:!1,running:!1}}}async installService(){try{const e=await(await fetch(`${M}/install-service`,{method:"POST",mode:"cors"})).json();return{ok:!!e.ok,output:e.output,needsAdmin:!!e.needsAdmin}}catch{return{ok:!1,output:"助手未运行，无法安装"}}}async uninstallService(){try{const e=await(await fetch(`${M}/uninstall-service`,{method:"POST",mode:"cors"})).json();return{ok:!!e.ok,output:e.output}}catch{return{ok:!1,output:"助手未运行，无法卸载"}}}startTimer(t,e,s){this.cancelTimer(),this.tickCb=e,this.onEnd=s??null,this.totalSec=Math.max(1,Math.round(t*60)),this.remainingSec=this.totalSec,e(this.remainingSec),this.timerId=window.setInterval(()=>{var n;this.remainingSec=Math.max(0,this.remainingSec-1),(n=this.tickCb)==null||n.call(this,this.remainingSec),this.remainingSec<=0&&(this.cancelTimer(),this.handleTimerEnd())},1e3)}cancelTimer(){this.timerId!==null&&(clearInterval(this.timerId),this.timerId=null),this.tickCb=null}async handleTimerEnd(){var t,e;if(this.realLockEnabled&&await this.lockNow()){this.engine.stop(),this.custom&&(this.custom.pause(),this.custom.src=""),this.isPlayingFlag=!1,(t=this.onEnd)==null||t.call(this);return}if(this.lockEnabled)this.enterLockScreen();else{if(this.engine.fadeOut(4),this.custom){const s=this.custom,n=s.volume,a=Date.now(),o=window.setInterval(()=>{const c=Math.max(0,1-(Date.now()-a)/4e3);s.volume=n*c,c<=.01&&(clearInterval(o),s.pause())},200)}this.isPlayingFlag=!1,(e=this.onEnd)==null||e.call(this)}}timerActive(){return this.timerId!==null}requestLockContext(){try{const t=document.documentElement;!document.fullscreenElement&&t.requestFullscreen&&t.requestFullscreen().then(()=>{this.wasFullscreen=!0}).catch(()=>{this.wasFullscreen=!1})}catch{}}enterLockScreen(){if(this.engine.fadeOut(6),this.custom){const s=this.custom;s.volume=Math.max(0,s.volume);const n=s.volume,a=Date.now(),o=window.setInterval(()=>{const c=Math.max(0,1-(Date.now()-a)/6e3);s.volume=n*c,c<=.01&&(clearInterval(o),s.pause())},200)}this.isPlayingFlag=!1;try{"Notification"in window&&Notification.permission==="granted"&&new Notification("眼健康乐园 · 助眠结束",{body:"已为你进入休眠黑屏，点击屏幕任意处即可退出。"})}catch{}const t=document.createElement("div");t.className="sleep-lock-overlay",t.innerHTML=`
+      <div class="sleep-lock-inner">
+        <div class="sleep-lock-moon">🌙</div>
+        <p class="sleep-lock-title">已锁定 · 休眠中</p>
+        <p class="sleep-lock-sub">点击屏幕任意处退出助眠</p>
+      </div>
+    `,document.body.appendChild(t),this.overlay=t;const e=()=>this.exitLockScreen();t.addEventListener("click",e)}exitLockScreen(){var t;if(this.overlay&&this.overlay.parentElement&&(this.overlay.removeEventListener("click",()=>this.exitLockScreen()),this.overlay.remove()),this.overlay=null,this.wasFullscreen&&document.fullscreenElement)try{document.exitFullscreen()}catch{}this.wasFullscreen=!1,(t=this.onExitLock)==null||t.call(this)}setOnExitLock(t){this.onExitLock=t}cleanup(){if(this.cancelTimer(),this.engine.stop(),this.custom&&(this.custom.pause(),this.custom.src=""),this.isPlayingFlag=!1,this.currentType=null,this.currentCustomUrl="",this.overlay&&this.overlay.parentElement&&this.overlay.remove(),this.overlay=null,this.wasFullscreen&&document.fullscreenElement)try{document.exitFullscreen()}catch{}this.wasFullscreen=!1}destroy(){this.cleanup(),this.engine.destroy()}}const h=new At;class z{constructor(t){l(this,"config");l(this,"container",null);l(this,"mouseMoveHandler",null);l(this,"reduceMotion");this.config=t,this.reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches}render(t=120){const e=this.config.irisColor,s=this.config.accessory,n=this.config.blush,a=t/2,o=t*.22,c=t*.1;let r="";switch(s){case"star":r=this.renderStar(a,t*.15);break;case"hat":r=this.renderHat(a,t*.1);break;case"monocle":r=this.renderMonocle(a,a);break;case"headphone":r=this.renderHeadphone(a,a,t);break}let d="";this.config.limitedOutfit&&(d=this.renderLimitedOutfit(a,a,t));let u="";return n&&(u=`
+        <ellipse cx="${t*.28}" cy="${t*.6}" rx="${t*.08}" ry="${t*.05}" fill="#FFB6C1" opacity="0.6"/>
+        <ellipse cx="${t*.72}" cy="${t*.6}" rx="${t*.08}" ry="${t*.05}" fill="#FFB6C1" opacity="0.6"/>
+      `),`
+      <div class="mascot-container" style="width:${t}px;height:${t}px;position:relative;">
+        <svg class="mascot-svg" width="${t}" height="${t}" viewBox="0 0 ${t} ${t}" xmlns="http://www.w3.org/2000/svg">
+          \x3C!-- 眼白 -->
+          <ellipse class="mascot-eye-white" cx="${a}" cy="${a}" rx="${t*.42}" ry="${t*.4}" fill="white" stroke="#ddd" stroke-width="1.5"/>
+          \x3C!-- 虹膜（可移动） -->
+          <g class="mascot-iris-group" data-center-x="${a}" data-center-y="${a}">
+            <circle class="mascot-iris" cx="${a}" cy="${a}" r="${o}" fill="${e}"/>
+            <circle class="mascot-pupil" cx="${a}" cy="${a}" r="${c}" fill="#1A1A1A"/>
+            <circle cx="${a-o*.3}" cy="${a-o*.3}" r="${c*.4}" fill="white" opacity="0.5"/>
+          </g>
+          \x3C!-- 眨眼上眼睑 -->
+          <ellipse class="mascot-lid-top" cx="${a}" cy="0" rx="${t*.42}" ry="${t*.4}" fill="#f0f0f0"/>
+          \x3C!-- 腮红 -->
+          ${u}
+          \x3C!-- 限定装扮光环 -->
+          ${d}
+          \x3C!-- 配饰 -->
+          ${r}
+        </svg>
+      </div>
+    `}renderStar(t,e){let n="";for(let a=0;a<10;a++){const o=Math.PI/5*a-Math.PI/2,c=a%2===0?8:8*.4,r=t+c*Math.cos(o),d=e+c*Math.sin(o);n+=a===0?`M${r},${d}`:`L${r},${d}`}return n+="Z",`<path d="${n}" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>`}renderHat(t,e){return`
+      <path d="M${t-25},${e+5} Q${t},${e-15} ${t+25},${e+5} L${t+22},${e+8} L${t-22},${e+8} Z" fill="#E74C3C"/>
+      <circle cx="${t}" cy="${e-10}" r="6" fill="#fff"/>
+    `}renderMonocle(t,e){return`
+      <circle cx="${t+18}" cy="${e-5}" r="18" fill="none" stroke="#D4AC0D" stroke-width="2.5"/>
+      <line x1="${t+18}" y1="${e+13}" x2="${t+18}" y2="${e+30}" stroke="#D4AC0D" stroke-width="1.5"/>
+    `}renderHeadphone(t,e,s){return`
+      <path d="M${t-s*.38},${e} Q${t},${e-s*.5} ${t+s*.38},${e}" fill="none" stroke="#2C3E50" stroke-width="4"/>
+      <ellipse cx="${t-s*.38}" cy="${e}" rx="8" ry="12" fill="#2C3E50"/>
+      <ellipse cx="${t+s*.38}" cy="${e}" rx="8" ry="12" fill="#2C3E50"/>
+    `}renderLimitedOutfit(t,e,s){const n=s*.48;return`
+      <circle cx="${t}" cy="${e}" r="${n}" fill="none" stroke="#FBBF24" stroke-width="2" opacity="0.5" stroke-dasharray="4 3">
+        <animateTransform attributeName="transform" type="rotate" from="0 ${t} ${e}" to="360 ${t} ${e}" dur="20s" repeatCount="indefinite"/>
+      </circle>
+      <path d="M${t-s*.35},${e+s*.3} Q${t},${e+s*.55} ${t+s*.35},${e+s*.3} L${t+s*.3},${e+s*.45} Q${t},${e+s*.6} ${t-s*.3},${e+s*.45} Z" fill="#3B82F6" opacity="0.3"/>
+      <text x="${t}" y="${e+s*.52}" text-anchor="middle" font-size="${s*.08}" fill="#FBBF24" opacity="0.6">护眼使者</text>
+    `}mount(t){this.container=t,!this.reduceMotion&&(this.mouseMoveHandler=e=>{const s=t.querySelector(".mascot-iris-group");if(!s)return;parseFloat(s.dataset.centerX||"0"),parseFloat(s.dataset.centerY||"0");const n=t.getBoundingClientRect(),a=e.clientX-(n.left+n.width/2),o=e.clientY-(n.top+n.height/2),c=6,r=Math.sqrt(a*a+o*o),d=Math.min(1,c/Math.max(r,1)),u=a*d*.3,v=o*d*.3;s.style.transform=`translate(${u.toFixed(1)}px, ${v.toFixed(1)}px)`},window.addEventListener("mousemove",this.mouseMoveHandler))}unmount(){this.mouseMoveHandler&&(window.removeEventListener("mousemove",this.mouseMoveHandler),this.mouseMoveHandler=null),this.container=null}static getRandomGreeting(){return at[Math.floor(Math.random()*at.length)]}updateConfig(t){this.config=t}getConfig(){return this.config}}class C{static getConfig(){try{const t=localStorage.getItem(st);if(!t)return{...this.defaultConfig};const e=JSON.parse(t);return{...this.defaultConfig,...e}}catch{return{...this.defaultConfig}}}static saveConfig(t){try{localStorage.setItem(st,JSON.stringify(t))}catch{}}static getStars(){const t=new Date().toISOString().split("T")[0];try{const e=localStorage.getItem(it);if(!e)return{total:0,todayDate:t,todayGamesCompleted:[],readArticles:[],quizPassed:!1,visionTestCompleted:!1,exerciseCompletedToday:!1};const s=JSON.parse(e);return s.todayDate!==t?{total:s.total||0,todayDate:t,todayGamesCompleted:[],readArticles:s.readArticles||[],quizPassed:s.quizPassed||!1,visionTestCompleted:!1,exerciseCompletedToday:!1}:{total:s.total||0,todayDate:t,todayGamesCompleted:s.todayGamesCompleted||[],readArticles:s.readArticles||[],quizPassed:s.quizPassed||!1,visionTestCompleted:s.visionTestCompleted||!1,exerciseCompletedToday:s.exerciseCompletedToday||!1}}catch{return{total:0,todayDate:t,todayGamesCompleted:[],readArticles:[],quizPassed:!1,visionTestCompleted:!1,exerciseCompletedToday:!1}}}static saveStars(t){try{localStorage.setItem(it,JSON.stringify(t))}catch{}}static completeGame(t){const e=this.getStars();return e.todayGamesCompleted.includes(t)?{awarded:!1,newTotal:e.total}:e.todayGamesCompleted.length>=3?{awarded:!1,newTotal:e.total}:(e.todayGamesCompleted.push(t),e.total+=1,this.saveStars(e),{awarded:!0,newTotal:e.total})}static completeVisionTest(){const t=this.getStars();return t.visionTestCompleted?{awarded:!1,newTotal:t.total}:(t.visionTestCompleted=!0,t.total+=3,this.saveStars(t),{awarded:!0,newTotal:t.total})}static completeExercise(){const t=this.getStars();return t.exerciseCompletedToday?{awarded:!1,newTotal:t.total}:(t.exerciseCompletedToday=!0,t.total+=1,this.saveStars(t),{awarded:!0,newTotal:t.total})}static readArticle(t){const e=this.getStars();return e.readArticles.includes(t)?{awarded:!1,newTotal:e.total}:(e.readArticles.push(t),e.total+=1,this.saveStars(e),{awarded:!0,newTotal:e.total})}static passQuiz(){const t=this.getStars();if(t.quizPassed)return{awarded:!1,newTotal:t.total,firstTime:!1};t.quizPassed=!0,t.total+=5,this.saveStars(t);const e=this.getConfig();return e.limitedOutfit||(e.limitedOutfit=!0,this.saveConfig(e)),{awarded:!0,newTotal:t.total,firstTime:!0}}static unlockAccessory(t,e){const s=this.getStars();if(s.total<e)return{success:!1,newTotal:s.total};s.total-=e,this.saveStars(s);const n=this.getConfig();return n.unlockedAccessories.includes(t)||(n.unlockedAccessories.push(t),this.saveConfig(n)),{success:!0,newTotal:s.total}}}l(C,"defaultConfig",{irisColor:"#5C4033",accessory:"none",blush:!0,unlockedAccessories:["star"],limitedOutfit:!1});function y(i,t){return`
+    <nav class="top-nav">
+      <div class="nav-logo" onclick="window.__app.goto('mainHome')">
+        <span class="nav-logo-icon">👁</span>
+        <span class="nav-logo-text">眼健康乐园</span>
+      </div>
+      <div class="nav-links">
+        <button class="nav-link" onclick="window.__app.goto('mainHome')">🏠 主站</button>
+        <button class="nav-link ${t==="home"?"active":""}" onclick="window.__app.goto('home')">视力测试</button>
+        <button class="nav-link ${t==="relaxMenu"?"active":""}" onclick="window.__app.goto('relaxMenu')">放松一下</button>
+        <button class="nav-link ${t==="sleepAid"?"active":""}" onclick="window.__app.goto('sleepAid')">助眠</button>
+        <button class="nav-link ${t==="articles"?"active":""}" onclick="window.__app.goto('articles')">护眼知识</button>
+        <button class="nav-link ${t==="quiz"?"active":""}" onclick="window.__app.goto('quiz')">健康问答</button>
+      </div>
+    </nav>
+  `}function k(i,t,e){setTimeout(()=>{const s=document.getElementById(t);s&&(s.innerHTML=i.mascot.render(e||100),i.mascot.mount(s))},50)}function b(i,t=3e3){const e=document.getElementById("toast");e&&e.remove();const s=document.createElement("div");s.id="toast",s.className="toast",s.textContent=i,document.body.appendChild(s),setTimeout(()=>s.classList.add("show"),10),setTimeout(()=>{s.classList.remove("show"),setTimeout(()=>s.remove(),300)},t)}function P(i,t){const e=document.createElement("div");e.className="modal-overlay",e.innerHTML=`
+    <div class="modal-card">
+      <p>${i}</p>
+      <div class="btn-group">
+        <button class="btn btn-secondary" id="modal-cancel">取消</button>
+        <button class="btn btn-danger" id="modal-confirm">确认</button>
+      </div>
+    </div>
+  `,document.body.appendChild(e),e.querySelector("#modal-cancel").addEventListener("click",()=>e.remove()),e.querySelector("#modal-confirm").addEventListener("click",()=>{e.remove(),t()})}class X{static formatEyeResult(t){return`${t.fivePoint}（小数记录 ${t.decimal}）`}static getDeviceLimitNote(t){return t.deviceLimit?"该眼结果受当前显示设备呈现上限影响":""}static buildResultDisplay(t,e,s){return{rightEyeText:`右眼：${this.formatEyeResult(t)}`,leftEyeText:`左眼：${this.formatEyeResult(e)}`,rightEyeNote:this.getDeviceLimitNote(t),leftEyeNote:this.getDeviceLimitNote(e),distanceNote:"目标距离 100 cm",disclaimer:"本次近似参考结果。结果可能受到距离、显示器和环境影响，不替代专业视力检查。",suggestions:["如对视力有疑虑，建议接受专业视力检查。","长时间使用屏幕后，建议远眺休息。","请将浏览器页面缩放保持为 100%。"]}}}function K(i){var a;const t=i.history.getAll();i.getStars();const e=t.length===0?'<p class="empty-hint">暂无测试记录。完成一次测试后，最近 10 次结果将显示在此处。</p>':t.map(o=>{const c=new Date(o.timestamp);return`
+              <div class="history-item">
+                <div class="history-date">${`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,"0")}-${String(c.getDate()).padStart(2,"0")} ${String(c.getHours()).padStart(2,"0")}:${String(c.getMinutes()).padStart(2,"0")}`}</div>
+                <div class="history-results">
+                  <span class="history-eye">${X.formatEyeResult(o.rightEye)}</span>
+                  <span class="history-eye">${X.formatEyeResult(o.leftEye)}</span>
+                </div>
+                <button class="btn-icon btn-delete" data-id="${o.id}" title="删除">✕</button>
+              </div>
+            `}).join("");i.app.innerHTML=`
+    ${y(i,"home")}
+    <main class="home-main">
+      <section class="hero-section">
+        <div class="hero-content">
+          <span class="section-badge">视力测试分区</span>
+          <h1 class="hero-title">视力参考测试</h1>
+          <p class="hero-subtitle">使用语音、键盘或鼠标，在约 3-5 分钟内完成双眼视力自测</p>
+          <div class="hero-buttons">
+            <button class="btn btn-secondary" id="btn-back-main">← 返回主站</button>
+            <button class="btn btn-primary btn-large" id="btn-start-test">开始视力测试</button>
+          </div>
+          <p class="hero-note">完成测试可获得 ⭐3 星光 · 演示型近似参考结果，不替代专业视力检查</p>
+        </div>
+        <div class="hero-mascot" id="home-mascot"></div>
+      </section>
+
+      <section class="history-section">
+        <div class="section-header">
+          <h2>最近测试结果</h2>
+          ${t.length>0?'<button class="btn btn-text btn-clear-all" id="btn-clear-all">清空全部</button>':""}
+        </div>
+        <div class="history-list">${e}</div>
+        <p class="storage-note">历史结果仅保存在当前浏览器。清除网站数据、使用无痕模式或更换浏览器后可能消失。</p>
+      </section>
+    </main>
+  `,k(i,"home-mascot",120),(a=document.getElementById("btn-back-main"))==null||a.addEventListener("click",()=>{i.goto("mainHome")}),document.getElementById("btn-start-test").addEventListener("click",()=>{i.initAudio(),i.startTest()}),document.querySelectorAll(".btn-delete").forEach(o=>{o.addEventListener("click",c=>{const r=c.currentTarget.dataset.id;P("确定要删除这条测试记录吗？",()=>{i.history.delete(r),K(i),b("记录已删除")})})});const s=document.getElementById("btn-clear-all");s&&s.addEventListener("click",()=>{P("确定要清空全部历史记录吗？此操作不可撤销。",()=>{i.history.clearAll(),K(i),b("已清空全部历史记录")})});const n=document.getElementById("home-mascot");n&&n.addEventListener("click",()=>{b(z.getRandomGreeting())})}function Bt(i){i.app.innerHTML=`
+    ${y()}
+    <main class="page-centered">
+      <div class="card card-wide">
+        <div class="welcome-mascot" id="welcome-mascot"></div>
+        <h1>欢迎进行视力参考测试</h1>
+        <div class="welcome-info">
+          <div class="info-item">
+            <span class="info-icon">⏱️</span>
+            <span>测试约需 3-5 分钟</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">📏</span>
+            <span>眼睛与屏幕保持约 100 cm 距离</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🔇</span>
+            <span>请在安静环境中进行</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🖥️</span>
+            <span>推荐使用最新版桌面 Chrome</span>
+          </div>
+        </div>
+
+        <div class="input-method-info">
+          <p>默认使用<b>语音</b>回答方向（推荐使用麦克风）。语音不可用时可使用<b>方向键</b>或<b>鼠标</b>。</p>
+        </div>
+
+        <div class="privacy-note">
+          <p>⚠️ 评分和结果在网页前端完成，不建设业务后端。但 Chrome 的语音识别在部分环境中可能将音频交由浏览器供应商的在线服务处理。</p>
+        </div>
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="confirm-understand" />
+          <span>我已了解本次结果仅供参考，不替代专业视力检查</span>
+        </label>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="window.__app.goto('home')">返回</button>
+          <button class="btn btn-primary" id="btn-continue" disabled>继续</button>
+        </div>
+      </div>
+    </main>
+  `,k(i,"welcome-mascot",80);const t=document.getElementById("confirm-understand"),e=document.getElementById("btn-continue");t.addEventListener("change",()=>{e.disabled=!t.checked}),e.addEventListener("click",()=>{i.goto("environmentCheck")})}function Pt(i){const t=G.isSupported(),e=navigator.onLine,s=/Chrome/.test(navigator.userAgent)&&!/Edg/.test(navigator.userAgent),a=[{icon:t?"✅":"❌",label:"语音识别 API",status:t?"可用":"不可用",detail:t?"":"当前浏览器不支持语音识别，可使用键盘或鼠标"},{icon:s?"✅":"⚠️",label:"浏览器",status:s?"Chrome":i.browserInfo,detail:s?"":"推荐使用最新版 Chrome 以获得最佳体验"},{icon:e?"✅":"⚠️",label:"网络连接",status:e?"在线":"离线",detail:e?"":"语音识别可能依赖在线服务，离线时无法使用语音"}].map(d=>`
+      <div class="check-item">
+        <span class="check-icon">${d.icon}</span>
+        <div class="check-info">
+          <div class="check-label">${d.label}</div>
+          <div class="check-status">${d.status}</div>
+          ${d.detail?`<div class="check-detail">${d.detail}</div>`:""}
+        </div>
+      </div>
+    `).join("");i.app.innerHTML=`
+    ${y()}
+    <main class="page-centered">
+      <div class="card card-wide">
+        <div class="env-mascot" id="env-mascot"></div>
+        <h1>环境检查</h1>
+        <div class="check-list">${a}</div>
+
+        ${t?`
+          <p class="env-tip">环境检查完成。将尝试使用语音模式，如遇问题可随时切换为键盘或鼠标。</p>
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="window.__app.goto('welcome')">返回</button>
+            <button class="btn btn-primary" id="btn-continue">开始语音热身</button>
+          </div>
+        `:`
+          <div class="env-warning">
+            <p>语音识别不可用，您可以使用键盘或鼠标完成测试。</p>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="window.__app.goto('welcome')">返回</button>
+            <button class="btn btn-primary" id="btn-keyboard">使用键盘</button>
+            <button class="btn btn-primary" id="btn-mouse">使用鼠标</button>
+          </div>
+        `}
+      </div>
+    </main>
+  `,k(i,"env-mascot",70);const o=document.getElementById("btn-continue");o&&o.addEventListener("click",()=>{i.switchInputMode("speech"),i.goto("voicePractice")});const c=document.getElementById("btn-keyboard");c&&c.addEventListener("click",()=>{i.switchInputMode("keyboard"),i.goto("keyboardPractice")});const r=document.getElementById("btn-mouse");r&&r.addEventListener("click",()=>{i.switchInputMode("mouse"),i.goto("mouseTutorial")})}const Y=[{word:"上",direction:"up"},{word:"下",direction:"down"},{word:"左",direction:"left"},{word:"右",direction:"right"}];function Ht(i){let t=0,e=[];function s(){const c=Y[t],r=Y.map((d,u)=>u<t?'<span class="dot dot-done">●</span>':u===t?'<span class="dot dot-current">●</span>':'<span class="dot">○</span>').join("");i.app.innerHTML=`
+      ${y()}
+      <main class="page-centered">
+        <div class="card card-wide">
+          <div class="practice-mascot" id="practice-mascot"></div>
+          <h1>语音热身</h1>
+          <p class="practice-hint">请依次说出以下方向词，帮助确认麦克风和说法是否可用</p>
+          <div class="progress-dots">${r}</div>
+          <div class="practice-word-display">
+            <div class="practice-word">${c.word}</div>
+            <div class="practice-direction">方向：${o(c.direction)}</div>
+          </div>
+          <div class="practice-status" id="practice-status">
+            <span class="listening-indicator">🎙️ 正在聆听...</span>
+          </div>
+          <div class="recognized-list" id="recognized-list">
+            ${e.map(d=>`<span class="recognized-tag">${d}</span>`).join("")}
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="btn-skip">跳过，改用键盘</button>
+          </div>
+        </div>
+      </main>
+    `,k(i,"practice-mascot",60),n(),document.getElementById("btn-skip").addEventListener("click",()=>{i.speechInput.stop(),i.switchInputMode("keyboard"),i.goto("keyboardPractice")})}function n(){i.speechInput.setCallbacks({onDirection:c=>{e.push(o(c));const r=document.getElementById("practice-status");r&&(r.innerHTML=`<span class="success-indicator">✅ 识别到：${o(c)}</span>`),a(),t++,t>=Y.length?(i.speechInput.stop(),setTimeout(()=>{b("语音热身完成！"),i.goto("rightEyeIntro")},800)):setTimeout(()=>s(),600)},onInvalidInput:c=>{const r=document.getElementById("practice-status");r&&(r.innerHTML=`<span class="error-indicator">❌ 未识别到方向词：${c}，请再说一次</span>`)},onError:c=>{(c==="mic_denied"||c==="network")&&(b("语音不可用，请选择其他输入方式"),i.goto("inputFallback"))},onTimeout:()=>{const c=document.getElementById("practice-status");c&&(c.innerHTML='<span class="error-indicator">⏱️ 没有听到声音，请再说一次</span>')},onStart:()=>{},onEnd:()=>{}}),i.speechInput.isListening()||i.speechInput.start()}function a(){const c=document.getElementById("recognized-list");c&&(c.innerHTML=e.map(r=>`<span class="recognized-tag">${r}</span>`).join(""))}function o(c){return{up:"上",down:"下",left:"左",right:"右"}[c]}s()}function ct(i,t){const e=t==="right",s=e?"右眼测试":"左眼测试",n=e?"请用手掌或遮眼板遮住<b>左眼</b>，注意不要按压眼球。":"请短暂休息一下，然后用手掌或遮眼板遮住<b>右眼</b>，注意不要按压眼球。";i.app.innerHTML=`
+    ${y()}
+    <main class="page-centered">
+      <div class="card card-wide">
+        <div class="eye-intro-mascot" id="eye-intro-mascot"></div>
+        <h1>${s}</h1>
+        <div class="eye-intro-content">
+          <p class="eye-instruction">${n}</p>
+          <div class="eye-diagram">
+            <div class="eye-icon ${e?"eye-active":"eye-covered"}">
+              <span>${e?"👁️":"🫳"}</span>
+              <span class="eye-label">右眼</span>
+            </div>
+            <div class="eye-icon ${e?"eye-covered":"eye-active"}">
+              <span>${e?"🫳":"👁️"}</span>
+              <span class="eye-label">左眼</span>
+            </div>
+          </div>
+          <p class="eye-tip">保持约 100 cm 距离，屏幕中心与视线大致平齐</p>
+          <p class="eye-mode">当前输入模式：${Dt(i.inputMode)}</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="window.__app.goto('home')">返回首页</button>
+          <button class="btn btn-primary" id="btn-ready">我已准备好</button>
+        </div>
+      </div>
+    </main>
+  `,k(i,"eye-intro-mascot",70),document.getElementById("btn-ready").addEventListener("click",()=>{i.startEyeTest(t)})}function Dt(i){switch(i){case"speech":return"语音";case"keyboard":return"方向键";case"mouse":return"鼠标";default:return i}}let A=null,B=null;function lt(i,t){const e=i.getCurrentQuestion();if(!e){i.goto(t==="right"?"leftEyeIntro":"results");return}const s=i.getOptotypeSize(e.grade),n=i.getProgress(),a=t==="right"?"右眼":"左眼",o=i.inputMode==="speech"?"语音":i.inputMode==="keyboard"?"方向键":"鼠标",r=n&&n.currentGrade>=5.3&&n?` · 最小E连击 ${n.maxGradeStreak}/${n.maxGradeStreakNeeded}`:"";let d="";if(i.inputMode==="mouse"?d=`
+      <div class="mouse-test-area" id="mouse-test-area">
+        <div class="optotype-container">
+          ${_.render(s,e.direction)}
+        </div>
+      </div>
+    `:d=`
+      <div class="optotype-display">
+        ${_.render(s,e.direction)}
+      </div>
+    `,i.app.innerHTML=`
+    <main class="test-page">
+      <div class="test-header">
+        <div class="test-info">
+          <span class="test-eye">${a}测试中</span>
+          ${n?`<span class="test-progress">第 ${n.currentQuestion}/${n.totalQuestions} 题 · 等级 ${n.currentGrade.toFixed(1)}${r}</span>`:""}
+          <span class="test-mode">输入：${o}</span>
+        </div>
+        <button class="btn btn-text btn-exit" id="btn-exit">退出</button>
+      </div>
+
+      <div class="test-main">
+        ${d}
+      </div>
+
+      <div class="test-footer">
+        ${i.inputMode==="speech"?'<div id="speech-retry-hint" class="speech-hint" style="display:none;"></div><p class="test-tip">请说出 E 的开口方向（上、下、左、右）</p>':i.inputMode==="keyboard"?'<p class="test-tip">请使用方向键 ↑ ↓ ← → 指出 E 的开口方向</p>':'<p class="test-tip">点击屏幕区域指出 E 的开口方向</p>'}
+      </div>
+    </main>
+  `,i.inputMode==="mouse"){const u=document.querySelector(".test-main");u&&u.classList.add("mouse-mode")}if(document.getElementById("btn-exit").addEventListener("click",()=>{i.goto("home")}),i.inputMode==="mouse"){const u=document.getElementById("mouse-test-area");if(u){u.classList.add("mouse-active");const v=(m,E)=>{const w=u.getBoundingClientRect(),$=m-w.left,S=E-w.top;return $>=0&&S>=0&&$<=w.width&&S<=w.height?(u.style.setProperty("--mouse-x",`${$}px`),u.style.setProperty("--mouse-y",`${S}px`),u.classList.add("cursor-ready"),!0):(u.classList.remove("cursor-ready"),!1)};A!==null&&B!==null&&v(A,B);const g=m=>{A=m.clientX,B=m.clientY,v(m.clientX,m.clientY)};u.addEventListener("mousemove",g),u.addEventListener("mouseenter",m=>{A=m.clientX,B=m.clientY,v(m.clientX,m.clientY)}),u.addEventListener("mouseleave",()=>{u.classList.remove("cursor-ready")});const f=(m,E)=>{const w=u.getBoundingClientRect(),$=document.createElement("div");$.className="mouse-invalid-ripple",$.style.left=`${m-w.left}px`,$.style.top=`${E-w.top}px`,u.appendChild($),setTimeout(()=>$.remove(),400)};i.mouseInput.stop(),i.mouseInput.attach(u),i.mouseInput.setESize(s),i.mouseInput.setCallbacks({onDirection:m=>i.submitDirection(m),onInvalidClick:()=>i.onInvalidMouseClick(),onClickPosition:(m,E,w)=>{A=m,B=E,v(m,E),w.type==="invalid"&&f(m,E)}}),i.mouseInput.start()}}}function Ft(i){const t=i.getRightEyeResult(),e=i.getLeftEyeResult();if(!t||!e){i.goto("home");return}const s=C.completeVisionTest();let n="";s.awarded&&(n='<div class="result-star-banner">🎉 测试完成！获得 3 颗星光 ⭐</div>');const a=X.buildResultDisplay(t,e,i.browserInfo);i.app.innerHTML=`
+    ${y()}
+    <main class="page-centered">
+      <div class="card card-wide results-card">
+        <div class="results-mascot" id="results-mascot"></div>
+        <h1>测试完成</h1>
+        ${n}
+
+        <div class="results-display">
+          <div class="result-eye-card">
+            <div class="result-eye-label">右眼</div>
+            <div class="result-eye-value">${t.fivePoint}</div>
+            <div class="result-eye-decimal">小数记录 ${t.decimal}</div>
+            ${t.deviceLimit?'<div class="result-device-limit">⚠️ 设备呈现上限</div>':""}
+          </div>
+          <div class="result-eye-card">
+            <div class="result-eye-label">左眼</div>
+            <div class="result-eye-value">${e.fivePoint}</div>
+            <div class="result-eye-decimal">小数记录 ${e.decimal}</div>
+            ${e.deviceLimit?'<div class="result-device-limit">⚠️ 设备呈现上限</div>':""}
+          </div>
+        </div>
+
+        <div class="result-notes">
+          <p class="result-note">${a.distanceNote}</p>
+          <p class="result-note">${a.disclaimer}</p>
+          ${a.suggestions.map(o=>`<p class="result-suggestion">💡 ${o}</p>`).join("")}
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="btn-home">返回主站</button>
+          <button class="btn btn-primary" id="btn-retest">重新测试</button>
+        </div>
+      </div>
+    </main>
+  `,k(i,"results-mascot",70),s.awarded&&setTimeout(()=>{i.showStarPopup(s.newTotal,"视力测试完成！获得 3 颗星光 ⭐")},800),document.getElementById("btn-home").addEventListener("click",()=>{i.goto("mainHome")}),document.getElementById("btn-retest").addEventListener("click",()=>{i.startTest()})}function qt(i){i.app.innerHTML=`
+    ${y()}
+    <main class="page-centered">
+      <div class="card card-wide">
+        <div class="fallback-mascot" id="fallback-mascot"></div>
+        <h1>切换输入方式</h1>
+        <p class="fallback-reason">
+          语音输入遇到问题。您可以选择以下方式继续测试：
+        </p>
+
+        <div class="fallback-options">
+          <button class="card option-card" id="opt-keyboard">
+            <div class="option-icon">⌨️</div>
+            <h3>键盘方向键</h3>
+            <p>使用 ↑ ↓ ← → 键回答</p>
+          </button>
+          <button class="card option-card" id="opt-mouse">
+            <div class="option-icon">🖱️</div>
+            <h3>鼠标点击</h3>
+            <p>点击屏幕四个区域回答</p>
+          </button>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-text" id="btn-retry-speech">再试一次语音</button>
+        </div>
+      </div>
+    </main>
+  `,k(i,"fallback-mascot",60),document.getElementById("opt-keyboard").addEventListener("click",()=>{i.switchInputMode("keyboard"),i.goto("keyboardPractice")}),document.getElementById("opt-mouse").addEventListener("click",()=>{i.switchInputMode("mouse"),i.goto("mouseTutorial")}),document.getElementById("btn-retry-speech").addEventListener("click",()=>{if(i.switchInputMode("speech"),i.state==="inputFallback"){const t=i.getRightEyeResult()?"left":"right";i.goto(t==="right"?"rightEyeTest":"leftEyeTest")}else i.goto("voicePractice")})}function _t(i){let t=0;const e=4;function s(){i.app.innerHTML=`
+      ${y()}
+      <main class="page-centered">
+        <div class="card card-wide">
+          <div class="kb-practice-mascot" id="kb-mascot"></div>
+          <h1>键盘练习</h1>
+          <p class="practice-hint">请使用方向键完成一次练习。四个方向键映射如下：</p>
+
+          <div class="key-mapping">
+            <div class="key-item"><span class="key">↑</span><span class="key-dir">上</span></div>
+            <div class="key-item"><span class="key">↓</span><span class="key-dir">下</span></div>
+            <div class="key-item"><span class="key">←</span><span class="key-dir">左</span></div>
+            <div class="key-item"><span class="key">→</span><span class="key-dir">右</span></div>
+          </div>
+
+          <div class="practice-progress">
+            <p>练习进度：${t}/${e}</p>
+            <p class="practice-status" id="kb-status">请按任意方向键开始练习</p>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="btn-back">返回</button>
+          </div>
+        </div>
+      </main>
+    `,k(i,"kb-mascot",60),i.keyboardInput.setCallbacks({onDirection:n=>{t++;const a=document.getElementById("kb-status");a&&(a.textContent=`收到：${Gt(n)}（${t}/${e}）`),t>=e&&(i.keyboardInput.stop(),b("练习完成！"),setTimeout(()=>{const o=i.getRightEyeResult()?"left":"right";i.goto(o==="right"?"rightEyeIntro":"leftEyeIntro")},800))}}),i.keyboardInput.start(),document.getElementById("btn-back").addEventListener("click",()=>{i.keyboardInput.stop(),i.goto("inputFallback")})}s()}function Gt(i){return{up:"上",down:"下",left:"左",right:"右"}[i]||i}function Ot(i){let t=0;const e=4;function s(){i.app.innerHTML=`
+      ${y()}
+      <main class="page-centered">
+        <div class="card card-wide">
+          <div class="mouse-tutorial-mascot" id="ms-mascot"></div>
+          <h1>鼠标教学</h1>
+          <p class="practice-hint">点击屏幕的四个区域来指出方向。中央是 E 视标，对角线附近为无效区域。</p>
+
+          <div class="mouse-tutorial-area" id="tutorial-area">
+            \x3C!-- 对角线（教学时可见） -->
+            <svg class="tutorial-diagonals" width="400" height="400" viewBox="0 0 400 400">
+              <line x1="0" y1="0" x2="400" y2="400" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" opacity="0.4"/>
+              <line x1="400" y1="0" x2="0" y2="400" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" opacity="0.4"/>
+            </svg>
+            \x3C!-- 方向标签 -->
+            <span class="zone-label zone-up">上</span>
+            <span class="zone-label zone-down">下</span>
+            <span class="zone-label zone-left">左</span>
+            <span class="zone-label zone-right">右</span>
+            \x3C!-- 中央 E -->
+            <div class="tutorial-optotype">
+              ${_.render(120,"right")}
+            </div>
+          </div>
+
+          <div class="practice-progress">
+            <p>练习进度：${t}/${e}</p>
+            <p class="practice-status" id="ms-status">请点击任意方向区域开始练习</p>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="btn-back">返回</button>
+          </div>
+        </div>
+      </main>
+    `,k(i,"ms-mascot",60);const a=document.getElementById("tutorial-area");i.mouseInput.attach(a),i.mouseInput.setESize(120),i.mouseInput.setCallbacks({onDirection:o=>{t++;const c=document.getElementById("ms-status");c&&(c.textContent=`收到：${Nt(o)}（${t}/${e}）`),i.audio.play("inputAccepted"),t>=e&&(i.mouseInput.stop(),b("练习完成！"),setTimeout(()=>{const r=i.getRightEyeResult()?"left":"right";i.goto(r==="right"?"rightEyeIntro":"leftEyeIntro")},800))},onInvalidClick:o=>{i.audio.play("invalidClick");const c=document.getElementById("ms-status");c&&(c.textContent=o==="boundary"?"⚠️ 点击了对角线危险带，请偏移一些":"⚠️ 点到了中央 E 区域，请偏移一些")}}),i.mouseInput.start(),document.getElementById("btn-back").addEventListener("click",()=>{i.mouseInput.stop(),i.goto("inputFallback")})}s()}function Nt(i){return{up:"上",down:"下",left:"左",right:"右"}[i]||i}function zt(i){const t=i.getStars(),e=W.map(s=>{const n=t.todayGamesCompleted.includes(s.id);return`
+      <div class="card relax-game-card" data-game-id="${s.id}">
+        <div class="game-icon game-icon-${s.icon}">${Vt(s.icon)}</div>
+        <h3>${s.name}</h3>
+        <p class="game-desc">${s.description}</p>
+        <p class="game-duration">${s.duration} 秒</p>
+        ${n?'<span class="game-completed-tag">今日已完成 ⭐</span>':""}
+      </div>
+    `}).join("");i.app.innerHTML=`
+    ${y(i,"relaxMenu")}
+    <main class="page-centered">
+      <div class="relax-container">
+        <div class="relax-mascot" id="relax-mascot"></div>
+        <h1>放松一下</h1>
+        <p class="relax-disclaimer">用于提醒休息和放松，不用于改善、治疗或诊断视力</p>
+
+        <div class="star-info">
+          <div class="star-item">
+            <span>今日星光</span>
+            <span class="star-count">${t.todayGamesCompleted.length}/3</span>
+          </div>
+          <div class="star-item">
+            <span>总星光</span>
+            <span class="star-count">${t.total}</span>
+          </div>
+        </div>
+
+        <div class="relax-games-grid">
+          ${e}
+        </div>
+      </div>
+    </main>
+  `,k(i,"relax-mascot",70),document.querySelectorAll(".relax-game-card").forEach(s=>{s.addEventListener("click",()=>{const n=s.dataset.gameId;i.startRelax(n)})})}function Vt(i){switch(i){case"circle":return"○";case"star":return"✦";case"bubble":return"○";default:return"○"}}function jt(i){const t=i.getCurrentRelaxGame();if(!t){i.goto("relaxMenu");return}const e=W.find(n=>n.id===t),s=i.getRelaxSession();if(!s){i.stopRelax();return}i.app.innerHTML=`
+    ${y(i,"relaxMenu")}
+    <main class="page-centered">
+      <div class="relax-session-container">
+        <h1>${e.name}</h1>
+        <p class="relax-game-desc">${e.description}</p>
+
+        <div class="relax-animation" id="relax-animation">
+          ${Qt(e.id)}
+        </div>
+
+        <div class="relax-timer">
+          <div class="timer-display" id="timer-display">${e.duration}</div>
+          <div class="timer-label">秒</div>
+        </div>
+
+        <div class="relax-controls">
+          <button class="btn btn-secondary" id="btn-pause">暂停</button>
+          <button class="btn btn-secondary" id="btn-reset">重新开始</button>
+          <button class="btn btn-text" id="btn-exit">退出</button>
+        </div>
+      </div>
+    </main>
+  `,s.setCallbacks({onTick:n=>{const a=document.getElementById("timer-display");a&&(a.textContent=n.toString())},onComplete:()=>{i.completeRelaxGame(t),b("放松完成！获得 1 颗星光 ⭐"),setTimeout(()=>i.stopRelax(),1500)}}),s.isStarted()||s.start(),document.getElementById("btn-pause").addEventListener("click",()=>{s.isRunning()?(s.pause(),document.getElementById("btn-pause").textContent="继续",document.getElementById("relax-animation").classList.add("paused")):(s.resume(),document.getElementById("btn-pause").textContent="暂停",document.getElementById("relax-animation").classList.remove("paused"))}),document.getElementById("btn-reset").addEventListener("click",()=>{s.reset();const n=document.getElementById("timer-display");n&&(n.textContent=e.duration.toString()),document.getElementById("btn-pause").textContent="暂停",document.getElementById("relax-animation").classList.remove("paused")}),document.getElementById("btn-exit").addEventListener("click",()=>{i.stopRelax()})}function Qt(i){switch(i){case"breathe":return`
+        <div class="breathe-animation">
+          <div class="breathe-circle"></div>
+          <div class="breathe-text" id="breathe-text">吸气...</div>
+        </div>
+      `;case"skystar":return`
+        <div class="skystar-animation">
+          ${Array.from({length:30},(t,e)=>{const s=Math.random()*100,n=Math.random()*100,a=Math.random()*3,o=2+Math.random()*4;return`<div class="star-dot" style="left:${s}%;top:${n}%;width:${o}px;height:${o}px;animation-delay:${a}s;"></div>`}).join("")}
+        </div>
+      `;case"bubbles":return`
+        <div class="bubbles-animation">
+          ${Array.from({length:12},(t,e)=>{const s=10+Math.random()*80,n=Math.random()*4,a=20+Math.random()*40,o=4+Math.random()*4;return`<div class="bubble" style="left:${s}%;width:${a}px;height:${a}px;animation-delay:${n}s;animation-duration:${o}s;"></div>`}).join("")}
+        </div>
+      `;default:return""}}function Yt(i){var Z,tt;i.app.innerHTML=`
+    ${y(i,"sleepAid")}
+    <main class="page-centered">
+      <div class="card card-wide about-card">
+        <h1>助眠</h1>
+        <p class="sleep-intro">挑一种舒缓的环境音，设定定时，让身体慢慢沉静下来。定时结束后会进入<span class="sleep-hl">休眠黑屏</span>，帮你的屏幕省电。</p>
+
+        <div class="sleep-section">
+          <h2>① 选择声音</h2>
+          <div class="sleep-sounds" id="sleep-sounds">
+            ${yt.map(p=>`
+              <button class="sleep-sound-card" data-sound="${p.id}">
+                <span class="sleep-sound-name">${p.name}</span>
+                <span class="sleep-sound-desc">${p.desc}</span>
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="sleep-custom">
+            <input type="text" id="sleep-custom-url" class="sleep-input" placeholder="或粘贴音频直链（.mp3 / .ogg 等）" />
+            <button class="btn btn-secondary" id="btn-custom-play">播放链接</button>
+          </div>
+        </div>
+
+        <div class="sleep-section">
+          <h2>② 播放控制</h2>
+          <div class="sleep-controls">
+            <button class="btn btn-primary" id="btn-play">${h.isPlaying()?"暂停":"播放"}</button>
+            <label class="sleep-volume">
+              音量
+              <input type="range" id="sleep-volume" min="0" max="100" value="${Math.round(h.getVolume()*100)}" />
+            </label>
+          </div>
+        </div>
+
+        <div class="sleep-section">
+          <h2>③ 定时休眠</h2>
+          <div class="sleep-timer-presets" id="sleep-presets">
+            <button class="btn btn-secondary" data-min="15">15 分钟</button>
+            <button class="btn btn-secondary" data-min="30">30 分钟</button>
+            <button class="btn btn-secondary" data-min="60">60 分钟</button>
+          </div>
+          <div class="sleep-timer-row">
+            <input type="number" id="sleep-minutes" class="sleep-input sleep-min-input" min="1" max="600" value="30" />
+            <span class="sleep-min-label">分钟</span>
+            <button class="btn btn-primary" id="btn-start">开始助眠</button>
+            <button class="btn btn-secondary" id="btn-cancel" style="display:none;">取消定时</button>
+          </div>
+          <div class="sleep-timer-display" id="sleep-timer-display"></div>
+          <label class="sleep-lock-toggle">
+            <input type="checkbox" id="sleep-lock-black" />
+            <span>结束后进入休眠黑屏（省电，无需额外工具）</span>
+          </label>
+          <label class="sleep-lock-toggle">
+            <input type="checkbox" id="sleep-lock-real" />
+            <span>结束后<strong>真正锁屏</strong>（系统级锁屏，最省电，需本地助手）</span>
+          </label>
+        </div>
+
+        <div class="sleep-section sleep-helper-card" id="sleep-helper-card">
+          <h2>④ 真正锁屏 · 本地助手</h2>
+          <p class="sleep-note">浏览器本身无法锁屏，需要一台只在你电脑上运行的「锁屏助手」。两种启动方式任选其一：</p>
+          <ul class="sleep-note sleep-tips">
+            <li><b>手动模式</b>：双击网站文件夹里的 <code>tools\\start-lock-server.bat</code>（保持窗口开着）。</li>
+            <li><b>常驻服务（推荐）</b>：点下方「安装为常驻服务」，助手会以无窗口后台运行，<b>开机/登录自动启动</b>，无需手动开窗口。</li>
+          </ul>
+          <div class="sleep-helper-status">
+            <span class="sleep-helper-pill" id="sleep-helper-pill">检测中…</span>
+            <button class="btn btn-secondary" id="btn-test-lock">测试锁屏</button>
+          </div>
+          <div class="sleep-service-row">
+            <span class="sleep-service-label">常驻服务：<b id="sleep-service-state">检测中…</b></span>
+            <button class="btn btn-primary" id="btn-install-service">安装为常驻服务</button>
+            <button class="btn btn-secondary" id="btn-uninstall-service">卸载</button>
+          </div>
+          <p class="sleep-note" id="sleep-service-msg"></p>
+        </div>
+
+        <div class="sleep-section">
+          <h2>推荐免费音源</h2>
+          <p class="sleep-note">以下为可免费商用的舒缓 / 自然音源，点击在新标签试听或下载，可把直链粘贴到上方"播放链接"。</p>
+          <div class="social-grid">
+            ${kt.map(p=>`
+              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="social-card">
+                <span class="social-icon">🎵</span>
+                <div class="social-info">
+                  <span class="social-name">${p.name}</span>
+                  <span class="social-platform">外部音源</span>
+                </div>
+                <span class="social-arrow">→</span>
+              </a>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="sleep-section sleep-tip">
+          <p>💡 关于"让电脑锁定"：网页无法直接调用系统锁屏。两种方式任选——① <b>休眠黑屏</b>（纯网页，定时结束后全屏变黑、显示器按系统电源设置休眠，省电）；② <b>真正锁屏</b>（需先启动 <code>tools\\start-lock-server.bat</code> 本地助手，定时结束后由助手代执行 <code>rundll32.exe user32.dll,LockWorkStation</code>，系统直接锁屏，最省电）。</p>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" id="btn-home">返回主页</button>
+        </div>
+      </div>
+    </main>
+  `;const t=document.getElementById("sleep-minutes"),e=document.getElementById("sleep-timer-display"),s=document.getElementById("btn-start"),n=document.getElementById("btn-cancel"),a=document.getElementById("btn-play"),o=document.getElementById("sleep-volume"),c=document.getElementById("sleep-lock-black"),r=document.getElementById("sleep-lock-real"),d=document.getElementById("sleep-helper-pill"),u=document.getElementById("btn-test-lock"),v=document.getElementById("sleep-custom-url"),g=document.getElementById("sleep-service-state"),f=document.getElementById("btn-install-service"),m=document.getElementById("btn-uninstall-service"),E=document.getElementById("sleep-service-msg"),w=p=>{d.textContent=p?"🟢 助手已连接":"🔴 助手未运行",d.classList.toggle("online",p),d.classList.toggle("offline",!p)};h.checkHelper().then(w),u.addEventListener("click",()=>{u.disabled=!0,h.lockNow().then(p=>{u.disabled=!1,p?b("已发送锁屏指令，屏幕应已锁定 🔒"):(w(!1),b("锁屏助手未运行，请先双击 tools\\start-lock-server.bat"))})});const $=async()=>{const p=await h.serviceStatus();p.installed?(g.className="svc-on",m.disabled=!1,p.running?(g.textContent="已安装 · 运行中",f.textContent="安装为常驻服务",f.disabled=!0):(g.textContent="已安装 · 未运行",f.textContent="启动服务",f.disabled=!1)):(g.textContent="未安装",g.className="svc-off",f.textContent="安装为常驻服务",f.disabled=!1,m.disabled=!0)};$(),f.addEventListener("click",()=>{f.disabled=!0,E.textContent="正在安装常驻服务…",h.installService().then(p=>{if(p.ok)E.textContent="✅ 已安装：助手将开机/登录自动后台运行（无窗口）。",b("常驻服务安装成功 🔧");else{f.disabled=!1;const T=p.needsAdmin?" 请以管理员身份运行 tools\\install-service.ps1（-System 模式需要）。":p.output?" 详情："+p.output:"";E.textContent="❌ 安装失败。"+T,b("安装失败，请查看说明")}$()})}),m.addEventListener("click",()=>{m.disabled=!0,E.textContent="正在卸载常驻服务…",h.uninstallService().then(p=>{E.textContent=p.ok?"✅ 已卸载常驻服务。":"❌ 卸载失败："+(p.output||""),$()})});const S=p=>{const T=Math.floor(p/60),H=p%60;return`${T}:${H.toString().padStart(2,"0")}`},x=()=>{a.textContent=h.isPlaying()?"暂停":"播放",document.querySelectorAll(".sleep-sound-card").forEach(p=>{const T=p.getAttribute("data-sound");p.classList.toggle("active",h.isPlaying()&&h.currentMode()==="procedural"&&h.currentType_()===T)})};document.querySelectorAll(".sleep-sound-card").forEach(p=>{p.addEventListener("click",()=>{const T=p.getAttribute("data-sound");h.playProcedural(T),h.setVolume(Number(o.value)/100),x()})}),a.addEventListener("click",()=>{h.isPlaying()?h.pause():!h.currentType_()&&!h.currentCustom()?h.playProcedural("rain"):h.resume(),x()}),o.addEventListener("input",()=>{h.setVolume(Number(o.value)/100)}),(Z=document.getElementById("btn-custom-play"))==null||Z.addEventListener("click",()=>{const p=v.value.trim();if(!p){b("请先粘贴音频直链");return}h.playCustom(p),x()}),document.querySelectorAll("#sleep-presets .btn").forEach(p=>{p.addEventListener("click",()=>{t.value=p.getAttribute("data-min")||"30"})}),h.setOnExitLock(()=>{i.goto("mainHome")});const J=()=>{s.style.display="",n.style.display="none",e.textContent=""};s.addEventListener("click",async()=>{const p=Math.max(1,Math.min(600,parseInt(t.value,10)||30));t.value=String(p);const T=r.checked,H=c.checked;if(!T&&!H){b("请先选择一种结束方式：黑屏 或 真正锁屏");return}h.setRealLockEnabled(T),h.setLockEnabled(H),h.setVolume(Number(o.value)/100);let et=T;if(T){const R=await h.checkHelper();if(w(R),!R)b("锁屏助手未运行：已自动改为黑屏省电。请先双击 tools\\start-lock-server.bat"),et=!1,h.setRealLockEnabled(!1),h.setLockEnabled(!0);else if("Notification"in window&&Notification.permission==="default")try{Notification.requestPermission()}catch{}}else{if("Notification"in window&&Notification.permission==="default")try{Notification.requestPermission()}catch{}h.requestLockContext()}h.isPlaying()||(h.playProcedural(h.currentType_()??"rain"),x()),h.startTimer(p,R=>{h.isRealLockEnabled()?e.textContent=`倒计时：${S(R)}　结束后自动锁屏 🔒`:h.isLockEnabled()?e.textContent=`休眠倒计时：${S(R)}　结束后黑屏省电`:e.textContent=`倒计时：${S(R)}`},()=>{h.isRealLockEnabled()||b("助眠结束，已为你处理 🌙"),J(),x()}),s.style.display="none",n.style.display="",b(et?"已开启真正锁屏，安心睡吧 🔒":"定时已开始，声音会在结束时渐弱")}),n.addEventListener("click",()=>{h.cancelTimer(),J()}),(tt=document.getElementById("btn-home"))==null||tt.addEventListener("click",()=>{h.timerActive()?P("助眠仍在进行，确定返回主页吗？声音与定时将停止。",()=>{i.goto("mainHome")}):i.goto("mainHome")}),x()}function Ut(i){const t=i.mascotConfig,e=i.getStars();function s(){const n=bt.map(r=>`
+      <button class="color-swatch ${t.irisColor===r.value?"selected":""}"
+              data-color="${r.value}" style="background:${r.value};" title="${r.name}"></button>
+    `).join(""),a=dt.map(r=>{const d=t.unlockedAccessories.includes(r.id),u=t.accessory===r.id,v=e.total>=r.starCost;return`
+      <div class="accessory-item ${u?"selected":""} ${d?"":"locked"}"
+           data-accessory="${r.id}" data-cost="${r.starCost}" data-unlocked="${d}">
+        <div class="accessory-preview">${Kt(r.id)}</div>
+        <div class="accessory-name">${r.name}</div>
+        ${r.starCost===0||d?"":`<div class="accessory-cost">⭐ ${r.starCost} ${v?"":"(不足)"}</div>`}
+      </div>
+    `}).join("");i.app.innerHTML=`
+      ${y(i,"mascotEditor")}
+      <main class="page-centered">
+        <div class="card card-wide mascot-editor">
+          <h1>给小瞳换装</h1>
+
+          <div class="editor-layout">
+            <div class="editor-preview">
+              <div id="mascot-preview" class="mascot-preview-container"></div>
+              <p class="star-balance">⭐ 总星光：${e.total}</p>
+              ${t.limitedOutfit?'<p class="limited-badge">✨ 已解锁限定装扮「护眼使者」</p>':'<p class="limited-hint">通过健康问答可解锁限定装扮</p>'}
+            </div>
+
+            <div class="editor-options">
+              <div class="option-section">
+                <h3>瞳色</h3>
+                <div class="color-swatches">${n}</div>
+              </div>
+
+              <div class="option-section">
+                <h3>配饰</h3>
+                <div class="accessory-grid">${a}</div>
+              </div>
+
+              <div class="option-section">
+                <h3>腮红</h3>
+                <div class="toggle-group">
+                  <button class="toggle-btn ${t.blush?"active":""}" data-blush="true">开</button>
+                  <button class="toggle-btn ${t.blush?"":"active"}" data-blush="false">关</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="btn-back">返回</button>
+            <button class="btn btn-secondary" id="btn-reset">恢复默认</button>
+            <button class="btn btn-primary" id="btn-save">保存</button>
+          </div>
+        </div>
+      </main>
+    `;const o=new z(t),c=document.getElementById("mascot-preview");c&&(c.innerHTML=o.render(160)),document.querySelectorAll(".color-swatch").forEach(r=>{r.addEventListener("click",()=>{t.irisColor=r.dataset.color,s()})}),document.querySelectorAll(".accessory-item").forEach(r=>{r.addEventListener("click",()=>{const d=r,u=d.dataset.accessory,v=d.dataset.unlocked==="true",g=parseInt(d.dataset.cost);if(v)t.accessory=u,s();else{if(e.total<g){b(`星光不足，需要 ${g} 颗星光`);return}P(`确定花费 ${g} 颗星光解锁"${Xt(u)}"吗？`,()=>{i.unlockAccessory(u,g),t.accessory=u,t.unlockedAccessories.push(u),e.total-=g,s(),b("解锁成功！")})}})}),document.querySelectorAll(".toggle-btn").forEach(r=>{r.addEventListener("click",()=>{t.blush=r.dataset.blush==="true",s()})}),document.getElementById("btn-save").addEventListener("click",()=>{i.updateMascotConfig(t),b("形象已保存！"),i.goto("mainHome")}),document.getElementById("btn-back").addEventListener("click",()=>{i.goto("mainHome")}),document.getElementById("btn-reset").addEventListener("click",()=>{P("确定恢复默认形象吗？已解锁的配饰不会被移除。",()=>{t.irisColor="#5C4033",t.accessory="none",t.blush=!0,s()})})}s()}function Xt(i){const t=dt.find(e=>e.id===i);return t?t.name:i}function Kt(i){switch(i){case"none":return"🚫";case"star":return"⭐";case"hat":return"🎩";case"monocle":return"🔍";case"headphone":return"🎧";default:return"?"}}function Wt(i){var s;const t=i.getStars(),e=i.mascotConfig;i.app.innerHTML=`
+    <main class="main-home">
+      <header class="main-header">
+        <div class="main-logo">
+          <span class="logo-icon">👁</span>
+          <span class="logo-text">眼健康乐园</span>
+        </div>
+        <div class="main-star-display">
+          <span class="star-icon">⭐</span>
+          <span class="star-count">${t.total}</span>
+        </div>
+      </header>
+
+      <section class="hero-section">
+        <div class="hero-mascot" id="hero-mascot"></div>
+        <h1 class="hero-title">欢迎来到眼健康乐园</h1>
+        <p class="hero-subtitle">${z.getRandomGreeting()}</p>
+        <button class="btn btn-primary hero-dressup-btn" id="btn-dressup">给小瞳换装 ✨</button>
+      </section>
+
+      <section class="sections-grid">
+        ${wt.map(n=>{const a=Jt(n.id,t);return`
+            <div class="section-card ${a?"section-completed":""}" data-state="${n.state}" style="--card-accent: ${n.accent};">
+              <div class="section-card-icon">${n.icon}</div>
+              <h3 class="section-card-title">${n.title}</h3>
+              <p class="section-card-desc">${n.description}</p>
+              <div class="section-card-footer">
+                ${n.starReward>0?`<span class="section-reward">⭐ ${n.starReward}</span>`:""}
+                ${a?'<span class="section-done">✓ 已完成</span>':'<span class="section-go">进入 →</span>'}
+              </div>
+            </div>
+          `}).join("")}
+      </section>
+
+      ${t.total>0&&!e.limitedOutfit?`
+        <section class="milestone-section">
+          <p class="milestone-hint">攒够星光可以给小瞳换装，通过健康问答还能解锁限定装扮！</p>
+        </section>
+      `:""}
+
+      <footer class="main-footer">
+        <p>本网站仅供眼健康科普参考，不构成医疗诊断建议。</p>
+        <p class="footer-copy">© 2026 眼健康乐园 · 用科技守护视力</p>
+      </footer>
+    </main>
+  `,k(i,"hero-mascot",140),document.querySelectorAll(".section-card").forEach(n=>{n.addEventListener("click",()=>{const a=n.getAttribute("data-state");a&&i.goto(a)})}),(s=document.getElementById("btn-dressup"))==null||s.addEventListener("click",()=>{i.goto("mascotEditor")})}function Jt(i,t){switch(i){case"vision":return t.visionTestCompleted;case"relax":return t.todayGamesCompleted.length>=3;case"exercise":return t.exerciseCompletedToday;case"articles":return t.readArticles.length>=3;case"quiz":return t.quizPassed;default:return!1}}function Zt(i){let t=0,e=I[0].duration,s=!1,n=null;function a(){var v,g,f;const d=I[t],u=(t+1)/I.length*100;i.app.innerHTML=`
+      ${y()}
+      <main class="page-centered">
+        <div class="card card-wide">
+          <div class="exercise-mascot" id="exercise-mascot"></div>
+          <h1>眼保健操</h1>
+          <p class="exercise-intro">跟随引导放松眼部肌肉，全部完成可获得 ⭐1 星光</p>
+
+          <div class="exercise-progress-bar">
+            <div class="exercise-progress-fill" style="width: ${u}%"></div>
+          </div>
+          <p class="exercise-step-count">第 ${t+1} / ${I.length} 节</p>
+
+          <div class="exercise-current">
+            <h2 class="exercise-step-name">${d.name}</h2>
+            <p class="exercise-instruction">${d.instruction}</p>
+            <div class="exercise-timer-display" id="exercise-timer">${e}s</div>
+          </div>
+
+          <div class="exercise-animation" id="exercise-animation">
+            ${te(t)}
+          </div>
+
+          <div class="btn-group">
+            ${t>0?'<button class="btn btn-secondary" id="btn-prev">上一节</button>':""}
+            <button class="btn btn-primary" id="btn-toggle">${s?"暂停":"开始"}</button>
+            <button class="btn btn-secondary" id="btn-reset">重置</button>
+          </div>
+        </div>
+      </main>
+    `,k(i,"exercise-mascot",60),(v=document.getElementById("btn-toggle"))==null||v.addEventListener("click",()=>{s?c():o()}),(g=document.getElementById("btn-reset"))==null||g.addEventListener("click",()=>{t=0,e=I[0].duration,s=!1,n&&clearInterval(n),a()}),(f=document.getElementById("btn-prev"))==null||f.addEventListener("click",()=>{t>0&&(t--,e=I[t].duration,a())})}function o(){s=!0;const d=document.getElementById("btn-toggle");d&&(d.textContent="暂停");const u=document.getElementById("exercise-animation");u&&u.classList.remove("paused"),n=window.setInterval(()=>{e--;const v=document.getElementById("exercise-timer");v&&(v.textContent=`${e}s`),e<=0&&(clearInterval(n),n=null,r())},1e3)}function c(){s=!1,n&&(clearInterval(n),n=null);const d=document.getElementById("btn-toggle");d&&(d.textContent="继续");const u=document.getElementById("exercise-animation");u&&u.classList.add("paused")}function r(){if(t++,t>=I.length){s=!1;const d=i.completeExercise();d.awarded?i.showStarPopup(d.newTotal,"眼保健操完成！获得 1 颗星光 ⭐"):b("眼保健操已完成，明天再来吧～"),setTimeout(()=>i.goto("mainHome"),2e3);return}e=I[t].duration,s=!1,a(),setTimeout(()=>o(),300)}a()}function te(i){switch(i){case 0:return'<div class="anim-breathe-circle"></div>';case 1:return'<div class="anim-blink-eye"><span>👁</span></div>';case 2:return'<div class="anim-focus"><span class="far">🏞️</span><span class="arrow">⇄</span><span class="near">📱</span></div>';case 3:return'<div class="anim-rotate"><div class="rotate-circle">↻</div></div>';case 4:return'<div class="anim-acupoint"><span>👆</span><span class="point-label">攒竹 · 睛明 · 四白</span></div>';case 5:return'<div class="anim-palm">🤲</div>';default:return""}}function ee(i){const t=i.getStars(),e=t.readArticles.length;i.app.innerHTML=`
+    ${y()}
+    <main class="page-centered">
+      <div class="card card-wide">
+        <div class="articles-mascot" id="articles-mascot"></div>
+        <h1>护眼知识</h1>
+        <p class="articles-intro">阅读文章可以了解护眼知识，每篇首次阅读获得 ⭐1 星光</p>
+        <p class="articles-progress">已阅读 ${e} / ${U.length} 篇</p>
+
+        <div class="articles-list">
+          ${U.map(s=>{const n=t.readArticles.includes(s.id);return`
+              <div class="article-item ${n?"article-read":""}" data-id="${s.id}">
+                <div class="article-item-header">
+                  <span class="article-category">${s.category}</span>
+                  ${n?'<span class="article-read-badge">✓ 已读</span>':'<span class="article-reward">⭐ +1</span>'}
+                </div>
+                <h3 class="article-title">${s.title}</h3>
+                <div class="article-meta">
+                  <span>⏱ ${s.readTime}</span>
+                </div>
+              </div>
+            `}).join("")}
+        </div>
+      </div>
+    </main>
+  `,k(i,"articles-mascot",60),document.querySelectorAll(".article-item").forEach(s=>{s.addEventListener("click",()=>{const n=s.getAttribute("data-id");n&&(i.navigate("articleReader"),window.__currentArticleId=n)})})}function se(i){var s,n;const t=window.__currentArticleId,e=U.find(a=>a.id===t);if(!e){i.goto("articles");return}i.app.innerHTML=`
+    ${y()}
+    <main class="page-centered">
+      <div class="card card-wide article-reader">
+        <span class="article-reader-category">${e.category}</span>
+        <h1 class="article-reader-title">${e.title}</h1>
+        <div class="article-reader-meta">
+          <span>⏱ ${e.readTime}</span>
+        </div>
+        <div class="article-reader-content">
+          ${e.content.map(a=>`<p>${a}</p>`).join("")}
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="btn-back-list">返回列表</button>
+          <button class="btn btn-primary" id="btn-read-done">读完啦</button>
+        </div>
+      </div>
+    </main>
+  `,(s=document.getElementById("btn-back-list"))==null||s.addEventListener("click",()=>{i.goto("articles")}),(n=document.getElementById("btn-read-done"))==null||n.addEventListener("click",()=>{const a=i.readArticle(e.id);a.awarded?i.showStarPopup(a.newTotal,`读完「${e.title}」获得 1 颗星光 ⭐`):b("已经读过这篇文章啦～"),setTimeout(()=>i.goto("articles"),1500)})}function ie(i){let t=0,e=0,s=-1,n=!1;const a=ne([...$t]).slice(0,10);function o(){var u,v;const r=a[t],d=(t+1)/a.length*100;i.app.innerHTML=`
+      ${y()}
+      <main class="page-centered">
+        <div class="card card-wide quiz-card">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" style="width: ${d}%"></div>
+          </div>
+          <p class="quiz-count">第 ${t+1} / ${a.length} 题 · 已答对 ${e} 题</p>
+
+          <h2 class="quiz-question">${r.question}</h2>
+
+          <div class="quiz-options">
+            ${r.options.map((g,f)=>{let m="quiz-option";return n?f===r.correctIndex?m+=" option-correct":f===s&&(m+=" option-wrong"):f===s&&(m+=" option-selected"),`<div class="${m}" data-index="${f}">${g}</div>`}).join("")}
+          </div>
+
+          ${n?`<div class="quiz-explanation"><strong>解析：</strong>${r.explanation}</div>`:""}
+
+          <div class="btn-group">
+            ${n?`<button class="btn btn-primary" id="btn-next">${t+1<a.length?"下一题":"查看结果"}</button>`:`<button class="btn btn-secondary" id="btn-skip" ${n?"disabled":""}>跳过</button>`}
+          </div>
+        </div>
+      </main>
+    `,document.querySelectorAll(".quiz-option").forEach(g=>{g.addEventListener("click",()=>{n||(s=parseInt(g.getAttribute("data-index")||"0"),n=!0,s===r.correctIndex&&e++,o())})}),(u=document.getElementById("btn-next"))==null||u.addEventListener("click",()=>{t++,s=-1,n=!1,t>=a.length?c():o()}),(v=document.getElementById("btn-skip"))==null||v.addEventListener("click",()=>{t++,s=-1,n=!1,t>=a.length?c():o()})}function c(){var v,g;const r=Math.round(e/a.length*100),d=r>=ot,u=i.getStars();if(i.app.innerHTML=`
+      ${y()}
+      <main class="page-centered">
+        <div class="card card-wide quiz-result-card">
+          <div class="quiz-result-mascot" id="quiz-result-mascot"></div>
+          <h1 class="quiz-result-title">${d?"🎉 恭喜通过！":"再接再厉！"}</h1>
+          <div class="quiz-result-score ${d?"score-pass":"score-fail"}">${r} 分</div>
+          <p class="quiz-result-detail">答对 ${e} / ${a.length} 题 · 及格线 ${ot} 分</p>
+
+          ${d&&!u.quizPassed?`
+            <div class="quiz-reward-banner">
+              <p>🎁 首次通过奖励：5 颗星光 + 限定装扮「护眼使者」已解锁！</p>
+            </div>
+          `:""}
+
+          ${d&&u.quizPassed?`
+            <p class="quiz-result-note">你之前已通过问答，限定装扮已解锁。继续保持！</p>
+          `:""}
+
+          ${d?"":`
+            <p class="quiz-result-note">差一点点！回到护眼知识板块复习一下，再来挑战吧～</p>
+          `}
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="btn-retry">再试一次</button>
+            <button class="btn btn-primary" id="btn-home">返回主页</button>
+          </div>
+        </div>
+      </main>
+    `,k(i,"quiz-result-mascot",80),d){const f=i.passQuiz();f.firstTime&&f.awarded&&setTimeout(()=>{i.showStarPopup(f.newTotal,"健康问答通过！获得 5 颗星光 ⭐ 并解锁限定装扮！")},500)}(v=document.getElementById("btn-retry"))==null||v.addEventListener("click",()=>{t=0,e=0,s=-1,n=!1,o()}),(g=document.getElementById("btn-home"))==null||g.addEventListener("click",()=>{i.goto("mainHome")})}o()}function ne(i){for(let t=i.length-1;t>0;t--){const e=Math.floor(Math.random()*(t+1));[i[t],i[e]]=[i[e],i[t]]}return i}function ae(i){var e;const t=i.getStars();i.app.innerHTML=`
+    ${y()}
+    <main class="page-centered">
+      <div class="card card-wide about-card">
+        <div class="about-mascot" id="about-mascot"></div>
+        <h1>关于我们</h1>
+
+        <div class="about-section">
+          <h2>项目理念</h2>
+          <p>眼健康乐园是一个面向大众的眼健康科普互动网站。我们希望通过趣味化的视力测试、放松小游戏、护眼知识和健康问答，让更多人关注用眼健康，养成科学护眼的习惯。</p>
+          <p>网站所有测试结果仅供参考，不能替代专业医疗诊断。如有视力问题，请及时就医。</p>
+        </div>
+
+        <div class="about-section">
+          <h2>星光成就</h2>
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-value">⭐ ${t.total}</span>
+              <span class="stat-label">累计星光</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">📖 ${t.readArticles.length}</span>
+              <span class="stat-label">已读文章</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">${t.quizPassed?"✅":"❌"}</span>
+              <span class="stat-label">问答通过</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-section">
+          <h2>创作者团队</h2>
+          <p class="about-social-intro">觉得有用的话，欢迎关注我们的社媒主页，给我们点支持～</p>
+          <div class="social-grid">
+            ${Tt.map(s=>`
+              <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="social-card">
+                <span class="social-icon">${s.icon}</span>
+                <div class="social-info">
+                  <span class="social-name">${s.name}</span>
+                  <span class="social-platform">${s.platform}</span>
+                </div>
+                <span class="social-arrow">→</span>
+              </a>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="about-section about-disclaimer">
+          <h2>免责声明</h2>
+          <p>本网站的视力测试基于标准 E 视标原理，但受屏幕分辨率、观看距离、环境光线等因素影响，结果仅供参考。眼部不适请咨询专业眼科医生。</p>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" id="btn-home">返回主页</button>
+        </div>
+      </div>
+    </main>
+  `,k(i,"about-mascot",70),(e=document.getElementById("btn-home"))==null||e.addEventListener("click",()=>{i.goto("mainHome")})}class oe{constructor(){l(this,"state","mainHome");l(this,"appDiv");l(this,"testEngine");l(this,"sizeStrategy");l(this,"historyRepo");l(this,"audio");l(this,"speechInput");l(this,"keyboardInput");l(this,"mouseInput");l(this,"currentInputMode","speech");l(this,"currentEye",null);l(this,"rightEyeResult",null);l(this,"leftEyeResult",null);l(this,"currentTestId",null);l(this,"speechFailCount",0);l(this,"savedBeforeFallback",null);l(this,"relaxSession",null);l(this,"mascot");l(this,"mascotConfig");l(this,"resizeHandler",null);l(this,"visibilityHandler",null);l(this,"currentRelaxGame",null);this.appDiv=document.getElementById("app"),this.sizeStrategy=new It,this.testEngine=new Ct,this.historyRepo=new rt,this.audio=new Rt,this.speechInput=new G,this.keyboardInput=new xt,this.mouseInput=new O,this.mascotConfig=C.getConfig(),this.mascot=new z(this.mascotConfig),this.setupGlobalHandlers()}setupGlobalHandlers(){this.resizeHandler=()=>{this.sizeStrategy.updateDevicePixelRatio(),(this.state==="rightEyeTest"||this.state==="leftEyeTest")&&this.handleTestInterrupt("resize")},window.addEventListener("resize",this.resizeHandler),this.visibilityHandler=()=>{document.hidden&&(this.state==="rightEyeTest"||this.state==="leftEyeTest")&&this.handleTestInterrupt("hidden")},document.addEventListener("visibilitychange",this.visibilityHandler)}init(){this.navigate("mainHome")}navigate(t){this.cleanupCurrentState(t),this.state=t,this.render()}goto(t){this.navigate(t)}cleanupCurrentState(t){this.speechInput.stop(),this.keyboardInput.stop(),this.mouseInput.stop(),this.mascot.unmount(),h.cleanup(),(this.state==="relaxSession"||t!=="relaxSession"&&this.relaxSession)&&this.relaxSession&&(this.relaxSession.destroy(),this.relaxSession=null)}render(){const t=this.createRenderContext();switch(this.state){case"mainHome":Wt(t);break;case"about":ae(t);break;case"mascotEditor":Ut(t);break;case"home":case"visionHome":K(t);break;case"welcome":Bt(t);break;case"environmentCheck":Pt(t);break;case"voicePractice":Ht(t);break;case"rightEyeIntro":ct(t,"right");break;case"rightEyeTest":lt(t,"right");break;case"leftEyeIntro":ct(t,"left");break;case"leftEyeTest":lt(t,"left");break;case"results":Ft(t);break;case"inputFallback":qt(t);break;case"keyboardPractice":_t(t);break;case"mouseTutorial":Ot(t);break;case"unsupportedBrowser":this.renderUnsupported();break;case"relaxMenu":zt(t);break;case"relaxSession":jt(t);break;case"sleepAid":Yt(t);break;case"eyeExercises":Zt(t);break;case"articles":ee(t);break;case"articleReader":se(t);break;case"quiz":ie(t);break}}renderUnsupported(){this.appDiv.innerHTML=`
+      <div class="page-centered">
+        <div class="card">
+          <h1>浏览器不兼容</h1>
+          <p>本应用推荐使用最新版桌面 Chrome 浏览器。</p>
+          <p>当前浏览器可能不支持部分功能，但您仍可以使用键盘或鼠标完成测试。</p>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="window.__app.goto('welcome')">继续</button>
+          </div>
+        </div>
+      </div>
+    `}createRenderContext(){return{app:this.appDiv,state:this.state,navigate:t=>this.navigate(t),goto:t=>this.navigate(t),startTest:()=>this.startTest(),startEyeTest:t=>this.startEyeTest(t),submitDirection:t=>this.submitDirection(t),getCurrentQuestion:()=>this.testEngine.getCurrentQuestion(),getOptotypeSize:t=>this.sizeStrategy.getOptotypeHeightPx(t),renderOptotype:(t,e)=>_.render(t,e),inputMode:this.currentInputMode,switchInputMode:t=>this.switchInputMode(t),history:this.historyRepo,audio:this.audio,speechInput:this.speechInput,keyboardInput:this.keyboardInput,mouseInput:this.mouseInput,mascot:this.mascot,mascotConfig:this.mascotConfig,updateMascotConfig:t=>this.updateMascotConfig(t),sizeStrategy:this.sizeStrategy,testEngine:this.testEngine,getRightEyeResult:()=>this.rightEyeResult,getLeftEyeResult:()=>this.leftEyeResult,getProgress:()=>this.testEngine.getProgress(),startRelax:t=>this.startRelax(t),stopRelax:()=>this.stopRelax(),pauseRelax:()=>this.pauseRelax(),resumeRelax:()=>this.resumeRelax(),getCurrentRelaxGame:()=>this.currentRelaxGame,getRelaxSession:()=>this.relaxSession,getStars:()=>C.getStars(),completeRelaxGame:t=>this.completeRelaxGame(t),unlockAccessory:(t,e)=>this.unlockAccessory(t,e),completeExercise:()=>this.completeExercise(),readArticle:t=>this.readArticle(t),passQuiz:()=>this.passQuiz(),showStarPopup:(t,e)=>this.showStarPopup(t,e),onSpeechFail:()=>this.handleSpeechFail(),onInvalidMouseClick:()=>this.handleInvalidMouseClick(),initAudio:()=>this.audio.init(),browserInfo:this.getBrowserInfo()}}getBrowserInfo(){const t=navigator.userAgent;return/Chrome/.test(t)&&!/Edg/.test(t)?"Chrome":"非 Chrome 浏览器"}startTest(){this.rightEyeResult=null,this.leftEyeResult=null,this.currentTestId=null,this.speechFailCount=0,this.testEngine.reset(),this.navigate("welcome")}startEyeTest(t){if(this.currentEye=t,this.speechFailCount=0,this.testEngine.reset(),!this.testEngine.startEye(t)){const s={grade:4,fivePoint:"4.0",decimal:"0.1",deviceLimit:!1};t==="right"?this.rightEyeResult=s:this.leftEyeResult=s,this.checkBothEyesComplete();return}this.navigate(t==="right"?"rightEyeTest":"leftEyeTest"),this.setupInputForTest()}setupInputForTest(){this.currentInputMode==="speech"?this.setupSpeechInput():this.currentInputMode==="keyboard"&&this.setupKeyboardInput()}setupSpeechInput(){this.speechInput.setCallbacks({onDirection:t=>this.submitDirection(t),onInvalidInput:()=>this.handleSpeechFail(),onError:t=>{t==="mic_denied"||t==="network"?this.navigate("inputFallback"):this.handleSpeechFail()},onTimeout:()=>this.handleSpeechFail(),onStart:()=>{},onEnd:()=>{}}),this.speechInput.start()}setupKeyboardInput(){this.keyboardInput.setCallbacks({onDirection:t=>this.submitDirection(t)}),this.keyboardInput.start()}submitDirection(t){const e=this.testEngine.submitAnswer(t);if(e.accepted){if(this.currentInputMode==="speech"&&(this.speechFailCount=0),this.audio.play("inputAccepted"),e.finished&&e.eyeResult){this.currentEye==="right"?this.rightEyeResult=e.eyeResult:this.leftEyeResult=e.eyeResult,this.checkBothEyesComplete();return}this.render()}}checkBothEyesComplete(){if(this.rightEyeResult&&this.leftEyeResult){this.currentTestId||(this.currentTestId=rt.generateId());const t={id:this.currentTestId,timestamp:new Date().toISOString(),rightEye:this.rightEyeResult,leftEye:this.leftEyeResult};this.historyRepo.save(t),this.navigate("results")}else this.rightEyeResult&&!this.leftEyeResult&&this.navigate("leftEyeIntro")}handleSpeechFail(){if(this.speechFailCount++,this.speechFailCount>=3)this.navigate("inputFallback");else{const t=document.getElementById("speech-retry-hint");t&&(t.textContent="没有识别到方向，请再说一次",t.style.display="block")}}handleInvalidMouseClick(){this.audio.play("invalidClick")}handleTestInterrupt(t){t==="hidden"&&this.speechInput.pause(),this.keyboardInput.stop(),this.mouseInput.stop(),this.render(),this.currentInputMode==="speech"&&t==="hidden"?this.speechInput.resume():this.currentInputMode==="keyboard"&&this.keyboardInput.start()}switchInputMode(t){this.currentInputMode=t,this.speechInput.stop(),this.keyboardInput.stop(),this.mouseInput.stop(),this.audio.init()}startRelax(t){const e=W.find(s=>s.id===t);e&&(this.currentRelaxGame=t,this.relaxSession=new Lt(e.duration),this.navigate("relaxSession"))}stopRelax(){this.relaxSession&&(this.relaxSession.destroy(),this.relaxSession=null),this.currentRelaxGame=null,this.navigate("relaxMenu")}pauseRelax(){var t;(t=this.relaxSession)==null||t.pause()}resumeRelax(){var t;(t=this.relaxSession)==null||t.resume()}completeRelaxGame(t){C.completeGame(t),this.audio.play("relaxComplete")}updateMascotConfig(t){this.mascotConfig=t,this.mascot.updateConfig(t),C.saveConfig(t)}unlockAccessory(t,e){C.unlockAccessory(t,e),this.mascotConfig=C.getConfig(),this.mascot.updateConfig(this.mascotConfig)}completeExercise(){const t=C.completeExercise();return this.audio.play("relaxComplete"),t}readArticle(t){return C.readArticle(t)}passQuiz(){const t=C.passQuiz();return t.firstTime&&(this.mascotConfig=C.getConfig(),this.mascot.updateConfig(this.mascotConfig),this.audio.play("relaxComplete")),t}showStarPopup(t,e){var n,a;const s=document.createElement("div");s.className="star-popup-overlay",s.innerHTML=`
+      <div class="star-popup-card">
+        <div class="star-popup-star">⭐</div>
+        <p class="star-popup-message">${e}</p>
+        <p class="star-popup-total">当前星光：${t}</p>
+        <div class="star-popup-buttons">
+          <button class="btn btn-secondary" id="star-popup-continue">继续</button>
+          <button class="btn btn-primary" id="star-popup-home">去换装</button>
+        </div>
+      </div>
+    `,document.body.appendChild(s),(n=document.getElementById("star-popup-continue"))==null||n.addEventListener("click",()=>{s.remove()}),(a=document.getElementById("star-popup-home"))==null||a.addEventListener("click",()=>{s.remove(),this.goto("mascotEditor")}),setTimeout(()=>{s.parentElement&&s.remove()},8e3)}}const pt=new oe;window.__app=pt;pt.init();</script>
+    <style rel="stylesheet" crossorigin>*{margin:0;padding:0;box-sizing:border-box}:root{--bg-primary: #1a1a2e;--bg-secondary: #16213e;--bg-card: #1e2a47;--bg-card-hover: #25365a;--text-primary: #e8e8e8;--text-secondary: #a0a0b8;--text-muted: #6c7293;--accent: #4e8af0;--accent-hover: #6ba0ff;--accent-light: rgba(78, 138, 240, .15);--danger: #e74c3c;--success: #2ecc71;--warning: #f39c12;--border: #2a3a5c;--radius: 12px;--radius-sm: 8px;--shadow: 0 4px 20px rgba(0, 0, 0, .3);--font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif}body{font-family:var(--font);background:var(--bg-primary);color:var(--text-primary);min-height:100vh;line-height:1.6}#app{min-height:100vh}.btn{padding:10px 24px;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:500;cursor:pointer;transition:all .2s ease;font-family:var(--font);display:inline-flex;align-items:center;justify-content:center;gap:6px}.btn:disabled{opacity:.4;cursor:not-allowed}.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover:not(:disabled){background:var(--accent-hover);transform:translateY(-1px)}.btn-secondary{background:var(--bg-card-hover);color:var(--text-primary);border:1px solid var(--border)}.btn-secondary:hover{background:var(--border)}.btn-danger{background:var(--danger);color:#fff}.btn-text{background:transparent;color:var(--text-secondary)}.btn-text:hover{color:var(--text-primary)}.btn-large{padding:14px 36px;font-size:17px}.btn-group{display:flex;gap:12px;justify-content:center;margin-top:20px}.btn-icon{background:transparent;border:none;cursor:pointer;padding:4px 8px;font-size:16px;color:var(--text-muted);border-radius:4px;transition:all .2s}.btn-icon:hover{background:#e74c3c26;color:var(--danger)}.top-nav{display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:60px;background:var(--bg-secondary);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}.nav-logo{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;font-size:18px}.nav-logo-icon{font-size:24px}.nav-links{display:flex;gap:8px}.nav-link{background:transparent;border:none;color:var(--text-secondary);padding:8px 16px;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;transition:all .2s;font-family:var(--font)}.nav-link:hover{background:var(--accent-light);color:var(--text-primary)}.nav-link.active{background:var(--accent-light);color:var(--accent)}.page-centered{display:flex;justify-content:center;align-items:flex-start;padding:40px 20px;min-height:calc(100vh - 60px)}.card{background:var(--bg-card);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);border:1px solid var(--border)}.card-wide{width:100%;max-width:640px}.home-main{max-width:900px;margin:0 auto;padding:32px 20px}.hero-section{display:flex;align-items:center;justify-content:space-between;gap:40px;margin-bottom:40px}.hero-content{flex:1}.hero-title{font-size:36px;font-weight:700;margin-bottom:12px;background:linear-gradient(135deg,var(--accent),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero-note{font-size:13px;color:var(--text-muted);margin-top:12px}.hero-mascot{flex-shrink:0;cursor:pointer}.quick-access{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px}.relax-card,.mascot-card{cursor:pointer;transition:all .2s ease;text-align:center}.relax-card:hover,.mascot-card:hover{background:var(--bg-card-hover);transform:translateY(-2px)}.card-icon{font-size:40px;margin-bottom:8px}.star-progress{display:flex;justify-content:space-between;margin-top:12px;font-size:13px;color:var(--text-secondary)}.star-count{font-weight:600;color:var(--warning)}.history-section{margin-bottom:40px}.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.section-header h2{font-size:22px}.btn-clear-all{color:var(--danger);font-size:14px}.history-list{display:flex;flex-direction:column;gap:8px}.history-item{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--bg-card);border-radius:var(--radius-sm);border:1px solid var(--border);transition:all .2s}.history-item:hover{background:var(--bg-card-hover)}.history-date{font-size:14px;color:var(--text-secondary);min-width:140px}.history-results{display:flex;gap:16px;flex:1;justify-content:center}.history-eye{font-size:15px;font-weight:500}.empty-hint{text-align:center;color:var(--text-muted);padding:40px 20px;font-size:14px}.storage-note{font-size:12px;color:var(--text-muted);margin-top:12px;text-align:center}.welcome-mascot,.env-mascot,.practice-mascot,.eye-intro-mascot,.results-mascot,.fallback-mascot,.kb-practice-mascot,.mouse-tutorial-mascot,.relax-mascot{display:flex;justify-content:center;margin-bottom:16px}.welcome-info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}.info-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-secondary);padding:10px;background:var(--bg-secondary);border-radius:var(--radius-sm)}.info-icon{font-size:18px}.input-method-info{background:var(--accent-light);padding:14px 20px;border-radius:var(--radius-sm);margin:16px 0;font-size:14px}.input-method-info b{color:var(--accent)}.privacy-note{background:#f39c121a;border:1px solid rgba(243,156,18,.3);padding:14px 20px;border-radius:var(--radius-sm);margin:16px 0;font-size:13px;color:var(--text-secondary)}.checkbox-label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;margin:16px 0}.checkbox-label input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}.check-list{display:flex;flex-direction:column;gap:12px;margin:20px 0}.check-item{display:flex;align-items:center;gap:14px;padding:14px 20px;background:var(--bg-secondary);border-radius:var(--radius-sm)}.check-icon{font-size:24px}.check-label{font-weight:600}.check-status{font-size:14px;color:var(--text-secondary)}.check-detail{font-size:13px;color:var(--warning);margin-top:4px}.env-tip{font-size:14px;color:var(--text-secondary);margin:16px 0}.env-warning{background:#f39c121a;padding:16px;border-radius:var(--radius-sm);margin:16px 0}.progress-dots{display:flex;justify-content:center;gap:12px;margin:20px 0}.dot{font-size:20px;color:var(--text-muted)}.dot-done{color:var(--success)}.dot-current{color:var(--accent)}.practice-word-display{text-align:center;padding:30px;background:var(--bg-secondary);border-radius:var(--radius);margin:20px 0}.practice-word{font-size:64px;font-weight:700;color:var(--accent)}.practice-direction{font-size:16px;color:var(--text-secondary);margin-top:8px}.practice-status{text-align:center;min-height:28px;font-size:15px}.listening-indicator{color:var(--accent);animation:pulse 1.5s infinite}.success-indicator{color:var(--success)}.error-indicator{color:var(--danger)}@keyframes pulse{0%,to{opacity:1}50%{opacity:.5}}.recognized-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:32px}.recognized-tag{background:var(--success);color:#fff;padding:4px 12px;border-radius:16px;font-size:13px}.practice-hint{color:var(--text-secondary);font-size:15px;margin-bottom:16px}.eye-intro-content{text-align:center;padding:20px 0}.eye-instruction{font-size:18px;margin-bottom:24px}.eye-instruction b{color:var(--accent)}.eye-diagram{display:flex;justify-content:center;gap:60px;margin:30px 0}.eye-icon{display:flex;flex-direction:column;align-items:center;gap:8px}.eye-icon span:first-child{font-size:48px}.eye-label{font-size:14px;color:var(--text-secondary)}.eye-active .eye-label{color:var(--success);font-weight:600}.eye-covered .eye-label{color:var(--text-muted)}.eye-tip{font-size:14px;color:var(--text-secondary);margin-bottom:8px}.eye-mode{font-size:13px;color:var(--text-muted)}.test-page{display:flex;flex-direction:column;min-height:100vh;background:var(--bg-primary)}.test-header{display:flex;justify-content:space-between;align-items:center;padding:16px 32px;background:var(--bg-secondary);border-bottom:1px solid var(--border)}.test-info{display:flex;gap:20px;align-items:center;font-size:14px;color:var(--text-secondary)}.test-eye{font-weight:600;color:var(--text-primary)}.btn-exit{color:var(--text-muted);font-size:14px}.test-main{flex:1;display:flex;justify-content:center;align-items:center;padding:40px}.test-main.mouse-mode{padding:0}.optotype-display{display:flex;justify-content:center;align-items:center;background:#fff;border-radius:var(--radius);padding:40px;min-width:160px;min-height:160px;box-shadow:0 4px 24px #00000026}.optotype-display svg{display:block;max-width:70vw;max-height:55vh}.mouse-test-area{width:100%;height:100%;background:#fff;border-radius:0;position:relative;display:flex;justify-content:center;align-items:center;cursor:none;overflow:hidden}.mouse-test-area svg{display:block;max-width:60vmin;max-height:60vmin}.mouse-active{cursor:none}.mouse-test-area:after{content:"";position:absolute;width:16px;height:16px;background:red;border:2px solid #ffffff;border-radius:50%;pointer-events:none;left:var(--mouse-x, 50%);top:var(--mouse-y, 50%);transform:translate(-50%,-50%);z-index:10;box-shadow:0 0 4px #00000080;opacity:0}.mouse-test-area.cursor-ready:after{opacity:1}.mouse-invalid-ripple{position:absolute;width:24px;height:24px;margin-left:-12px;margin-top:-12px;border-radius:50%;background:#ff3b3059;pointer-events:none;animation:invalid-ripple .35s ease-out forwards;z-index:11}@keyframes invalid-ripple{0%{transform:scale(.6);opacity:.8}to{transform:scale(2);opacity:0}}.test-footer{padding:20px 32px;text-align:center}.test-tip{font-size:15px;color:var(--text-secondary)}.speech-hint{color:var(--warning);font-size:14px;margin-bottom:8px}.results-card{text-align:center}.results-display{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0}.result-eye-card{background:var(--bg-secondary);border-radius:var(--radius);padding:24px;border:1px solid var(--border)}.result-eye-label{font-size:16px;color:var(--text-secondary);margin-bottom:8px}.result-eye-value{font-size:42px;font-weight:700;color:var(--accent)}.result-eye-decimal{font-size:14px;color:var(--text-secondary);margin-top:4px}.result-device-limit{font-size:13px;color:var(--warning);margin-top:8px}.result-notes{text-align:left;margin:20px 0}.result-note{font-size:14px;color:var(--text-secondary);margin-bottom:8px;padding:8px 12px;background:var(--bg-secondary);border-radius:var(--radius-sm)}.result-suggestion{font-size:13px;color:var(--text-secondary);margin-bottom:6px}.fallback-reason{font-size:15px;color:var(--text-secondary);margin-bottom:20px;text-align:center}.fallback-options{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}.option-card{cursor:pointer;text-align:center;transition:all .2s;padding:24px}.option-card:hover{background:var(--bg-card-hover);transform:translateY(-2px)}.option-icon{font-size:36px;margin-bottom:8px}.key-mapping{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}.key-item{display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px;background:var(--bg-secondary);border-radius:var(--radius-sm)}.key{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;background:var(--bg-card-hover);border:2px solid var(--border);border-radius:8px;font-size:24px;font-weight:600;box-shadow:0 2px 0 var(--border)}.key-dir{font-size:14px;color:var(--text-secondary)}.practice-progress{text-align:center;margin:20px 0;font-size:15px;color:var(--text-secondary)}.practice-status{margin-top:8px;min-height:24px}.mouse-tutorial-area{width:400px;height:400px;background:#fff;border-radius:8px;margin:20px auto;position:relative;display:flex;justify-content:center;align-items:center;cursor:crosshair}.tutorial-diagonals{position:absolute;top:0;left:0;width:100%;height:100%}.tutorial-optotype{position:relative;z-index:2}.zone-label{position:absolute;font-size:18px;font-weight:600;color:#666}.zone-up{top:10px;left:50%;transform:translate(-50%)}.zone-down{bottom:10px;left:50%;transform:translate(-50%)}.zone-left{left:10px;top:50%;transform:translateY(-50%)}.zone-right{right:10px;top:50%;transform:translateY(-50%)}.relax-container{text-align:center;max-width:600px;width:100%}.relax-disclaimer{font-size:13px;color:var(--text-muted);margin-bottom:20px}.star-info{display:flex;justify-content:center;gap:32px;margin-bottom:28px}.star-item{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--text-secondary)}.star-count{font-size:24px;font-weight:700;color:var(--warning)}.relax-games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.relax-game-card{cursor:pointer;text-align:center;transition:all .2s;padding:24px 16px;position:relative}.relax-game-card:hover{background:var(--bg-card-hover);transform:translateY(-2px)}.game-icon{font-size:36px;margin-bottom:8px;color:var(--accent)}.game-desc{font-size:13px;color:var(--text-secondary);margin:8px 0}.game-duration{font-size:12px;color:var(--text-muted)}.game-completed-tag{display:inline-block;margin-top:8px;font-size:12px;color:var(--warning);background:#f39c1226;padding:2px 8px;border-radius:12px}.relax-session-container{text-align:center;max-width:500px;width:100%}.relax-game-desc{color:var(--text-secondary);margin-bottom:20px}.relax-animation{width:320px;height:320px;margin:0 auto 20px;position:relative;overflow:hidden;border-radius:var(--radius);background:linear-gradient(180deg,#0d1b2a,#1b263b)}.relax-animation.paused *{animation-play-state:paused!important}.relax-timer{display:flex;align-items:baseline;justify-content:center;gap:6px;margin-bottom:20px}.timer-display{font-size:48px;font-weight:700;color:var(--accent)}.timer-label{font-size:18px;color:var(--text-secondary)}.relax-controls{display:flex;gap:12px;justify-content:center}.breathe-animation{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}.breathe-circle{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#4e8af066,#4e8af01a);border:2px solid rgba(78,138,240,.5);animation:breathe-scale 8s ease-in-out infinite}@keyframes breathe-scale{0%,to{transform:scale(.8)}50%{transform:scale(1.4)}}.breathe-text{margin-top:16px;font-size:16px;color:var(--text-secondary);animation:breathe-text 8s ease-in-out infinite}@keyframes breathe-text{0%,to{content:"呼气...";opacity:.7}50%{content:"吸气...";opacity:1}}.skystar-animation{width:100%;height:100%;position:relative;background:linear-gradient(180deg,#0a0e27,#1a1a3e)}.star-dot{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite}@keyframes twinkle{0%,to{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}.bubbles-animation{width:100%;height:100%;position:relative;overflow:hidden}.bubble{position:absolute;bottom:-50px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ffffff4d,#4e8af026);border:1px solid rgba(255,255,255,.2);animation:bubble-rise 6s ease-in infinite}@keyframes bubble-rise{0%{bottom:-50px;opacity:0;transform:translate(0)}10%{opacity:.8}90%{opacity:.4}to{bottom:350px;opacity:0;transform:translate(30px)}}.mascot-container{display:inline-block}.mascot-svg{animation:mascot-float 3s ease-in-out infinite}@keyframes mascot-float{0%,to{transform:translateY(0)}50%{transform:translateY(-6px)}}.mascot-iris-group{transition:transform .15s ease-out}.mascot-editor{max-width:800px}.editor-layout{display:grid;grid-template-columns:200px 1fr;gap:32px;margin:20px 0}.editor-preview{text-align:center}.mascot-preview-container{display:flex;justify-content:center;margin-bottom:12px}.star-balance{font-size:15px;color:var(--warning);font-weight:600}.editor-options{display:flex;flex-direction:column;gap:20px}.option-section h3{font-size:16px;margin-bottom:10px}.color-swatches{display:flex;gap:10px;flex-wrap:wrap}.color-swatch{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s}.color-swatch.selected{border-color:var(--accent);transform:scale(1.1)}.color-swatch:hover{transform:scale(1.1)}.accessory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.accessory-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:var(--bg-secondary);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;border:2px solid transparent}.accessory-item.selected{border-color:var(--accent);background:var(--accent-light)}.accessory-item.locked{opacity:.6}.accessory-item:hover{background:var(--bg-card-hover)}.accessory-preview{font-size:24px}.accessory-name{font-size:13px;color:var(--text-secondary)}.accessory-cost{font-size:12px;color:var(--warning)}.toggle-group{display:flex;gap:8px}.toggle-btn{padding:6px 20px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-secondary);cursor:pointer;font-size:14px;font-family:var(--font)}.toggle-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}.toast{position:fixed;bottom:32px;left:50%;transform:translate(-50%) translateY(100px);background:var(--bg-card);color:var(--text-primary);padding:12px 28px;border-radius:24px;font-size:14px;box-shadow:var(--shadow);border:1px solid var(--border);z-index:1000;opacity:0;transition:all .3s ease}.toast.show{opacity:1;transform:translate(-50%) translateY(0)}.modal-overlay{position:fixed;top:0;right:0;bottom:0;left:0;background:#0009;display:flex;justify-content:center;align-items:center;z-index:2000;animation:fadeIn .2s ease}.modal-card{background:var(--bg-card);border-radius:var(--radius);padding:28px;max-width:400px;width:90%;box-shadow:var(--shadow);border:1px solid var(--border)}.modal-card p{margin-bottom:20px;font-size:15px}@media (max-width: 768px){.hero-section{flex-direction:column-reverse;text-align:center}.quick-access,.welcome-info,.results-display,.fallback-options,.relax-games-grid,.editor-layout{grid-template-columns:1fr}.key-mapping{grid-template-columns:1fr 1fr}}.main-home{min-height:100vh;display:flex;flex-direction:column}.main-header{display:flex;justify-content:space-between;align-items:center;padding:16px 32px;background:var(--bg-secondary);border-bottom:1px solid var(--border)}.main-logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;color:var(--text-primary)}.logo-icon{font-size:24px}.main-star-display{display:flex;align-items:center;gap:6px;padding:6px 16px;background:#ffd7001f;border-radius:20px;font-size:16px;font-weight:600}.star-icon{font-size:18px}.hero-section{text-align:center;padding:48px 32px 32px}.hero-mascot{display:flex;justify-content:center;margin-bottom:20px}.hero-title{font-size:32px;font-weight:800;color:var(--text-primary);margin-bottom:8px}.hero-subtitle{font-size:16px;color:var(--text-secondary);margin-bottom:24px}.hero-dressup-btn{font-size:15px}.sections-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:0 32px 32px;max-width:1200px;margin:0 auto;width:100%}.section-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:24px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;border-left:4px solid var(--card-accent, var(--accent))}.section-card:hover{transform:translateY(-4px);border-color:var(--card-accent, var(--accent));box-shadow:0 8px 24px #00000026}.section-card.section-completed{opacity:.7}.section-card-icon{font-size:36px;margin-bottom:12px}.section-card-title{font-size:18px;font-weight:700;color:var(--text-primary);margin-bottom:8px}.section-card-desc{font-size:14px;color:var(--text-secondary);line-height:1.5;margin-bottom:16px}.section-card-footer{display:flex;justify-content:space-between;align-items:center;font-size:13px}.section-reward{color:gold;font-weight:600}.section-done{color:var(--success);font-weight:600}.section-go{color:var(--accent);font-weight:600}.milestone-section{text-align:center;padding:0 32px 32px}.milestone-hint{font-size:14px;color:var(--text-muted);padding:12px 24px;background:var(--bg-secondary);border-radius:var(--radius);display:inline-block}.main-footer{text-align:center;padding:24px 32px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px}.footer-copy{margin-top:4px;opacity:.7}.star-popup-overlay{position:fixed;top:0;right:0;bottom:0;left:0;background:#0009;display:flex;justify-content:center;align-items:center;z-index:1000;animation:fadeIn .2s ease}.star-popup-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:40px 48px;text-align:center;max-width:400px;border:1px solid var(--border);box-shadow:0 16px 48px #0000004d}.star-popup-star{font-size:56px;animation:starBounce .5s ease}.star-popup-message{font-size:18px;font-weight:600;color:var(--text-primary);margin:16px 0 8px}.star-popup-total{font-size:15px;color:var(--text-secondary);margin-bottom:24px}.star-popup-buttons{display:flex;gap:12px;justify-content:center}@keyframes starBounce{0%{transform:scale(0) rotate(-180deg)}60%{transform:scale(1.2) rotate(10deg)}to{transform:scale(1) rotate(0)}}@keyframes fadeIn{0%{opacity:0}to{opacity:1}}.exercise-mascot{display:flex;justify-content:center;margin-bottom:16px}.exercise-intro{text-align:center;color:var(--text-secondary);font-size:14px;margin-bottom:20px}.exercise-progress-bar{height:6px;background:var(--bg-primary);border-radius:3px;overflow:hidden;margin-bottom:8px}.exercise-progress-fill{height:100%;background:var(--success);transition:width .3s ease}.exercise-step-count{text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:24px}.exercise-current{text-align:center;margin-bottom:24px}.exercise-step-name{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:8px}.exercise-instruction{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px}.exercise-timer-display{font-size:36px;font-weight:800;color:var(--accent)}.exercise-animation{display:flex;justify-content:center;align-items:center;height:120px;margin-bottom:24px;font-size:48px}.exercise-animation.paused *{animation-play-state:paused!important}.anim-breathe-circle{width:60px;height:60px;border-radius:50%;background:var(--accent);opacity:.6;animation:breatheScale 4s ease-in-out infinite}@keyframes breatheScale{0%,to{transform:scale(.8);opacity:.4}50%{transform:scale(1.4);opacity:.8}}.anim-blink-eye{animation:blinkAnim 2s ease-in-out infinite}@keyframes blinkAnim{0%,90%,to{transform:scaleY(1)}95%{transform:scaleY(.1)}}.anim-focus{display:flex;align-items:center;gap:16px;font-size:32px}.anim-focus .arrow{animation:arrowMove 3s ease-in-out infinite}@keyframes arrowMove{0%,to{transform:translate(-8px)}50%{transform:translate(8px)}}.anim-rotate .rotate-circle{font-size:48px;animation:rotateSpin 4s linear infinite}@keyframes rotateSpin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.anim-acupoint{display:flex;flex-direction:column;align-items:center;gap:8px}.point-label{font-size:14px;color:var(--text-secondary)}.anim-palm{animation:palmGlow 3s ease-in-out infinite}@keyframes palmGlow{0%,to{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}.articles-mascot{display:flex;justify-content:center;margin-bottom:16px}.articles-intro{text-align:center;color:var(--text-secondary);font-size:14px;margin-bottom:8px}.articles-progress{text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:24px}.articles-list{display:flex;flex-direction:column;gap:12px}.article-item{background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;cursor:pointer;transition:border-color .2s,transform .15s}.article-item:hover{border-color:var(--accent);transform:translate(4px)}.article-item.article-read{opacity:.7}.article-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.article-category{font-size:12px;padding:2px 10px;background:#3b82f626;color:var(--accent);border-radius:10px}.article-read-badge{font-size:12px;color:var(--success)}.article-reward{font-size:12px;color:gold}.article-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:6px}.article-meta{font-size:13px;color:var(--text-muted)}.article-reader{max-width:720px}.article-reader-category{display:inline-block;font-size:12px;padding:2px 10px;background:#3b82f626;color:var(--accent);border-radius:10px;margin-bottom:12px}.article-reader-title{font-size:26px;font-weight:800;color:var(--text-primary);margin-bottom:8px}.article-reader-meta{font-size:14px;color:var(--text-muted);margin-bottom:24px}.article-reader-content p{font-size:15px;line-height:1.8;color:var(--text-primary);margin-bottom:16px}.quiz-card{max-width:640px}.quiz-progress-bar{height:6px;background:var(--bg-primary);border-radius:3px;overflow:hidden;margin-bottom:8px}.quiz-progress-fill{height:100%;background:var(--danger);transition:width .3s ease}.quiz-count{text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:24px}.quiz-question{font-size:20px;font-weight:700;color:var(--text-primary);margin-bottom:24px;line-height:1.5}.quiz-options{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}.quiz-option{padding:14px 20px;background:var(--bg-primary);border:2px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:15px;color:var(--text-primary);transition:all .15s}.quiz-option:hover{border-color:var(--accent)}.quiz-option.option-selected{border-color:var(--accent);background:#3b82f61a}.quiz-option.option-correct{border-color:var(--success);background:#10b9811f;color:var(--success);font-weight:600}.quiz-option.option-wrong{border-color:var(--danger);background:#ef44441f;color:var(--danger);text-decoration:line-through}.quiz-explanation{padding:16px;background:var(--bg-primary);border-radius:var(--radius);border-left:3px solid var(--accent);font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px}.quiz-result-card{text-align:center;max-width:480px}.quiz-result-mascot{display:flex;justify-content:center;margin-bottom:16px}.quiz-result-title{font-size:28px;font-weight:800;margin-bottom:16px}.quiz-result-score{font-size:56px;font-weight:800;margin-bottom:8px}.score-pass{color:var(--success)}.score-fail{color:var(--danger)}.quiz-result-detail{font-size:15px;color:var(--text-secondary);margin-bottom:20px}.quiz-reward-banner{padding:16px;background:#ffd7001f;border:1px solid rgba(255,215,0,.3);border-radius:var(--radius);margin-bottom:20px;font-size:15px;color:gold;font-weight:600}.quiz-result-note{font-size:14px;color:var(--text-secondary);margin-bottom:20px}.about-card{max-width:720px}.about-mascot{display:flex;justify-content:center;margin-bottom:16px}.about-section{margin-bottom:32px}.about-section h2{font-size:18px;font-weight:700;color:var(--text-primary);margin-bottom:12px}.about-section p{font-size:15px;line-height:1.7;color:var(--text-secondary);margin-bottom:8px}.about-stats{display:flex;gap:24px;justify-content:center}.stat-item{display:flex;flex-direction:column;align-items:center;gap:4px}.stat-value{font-size:24px;font-weight:700;color:var(--text-primary)}.stat-label{font-size:13px;color:var(--text-muted)}.about-social-intro{text-align:center;margin-bottom:20px}.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}.social-card{display:flex;align-items:center;gap:12px;padding:16px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:var(--text-primary);transition:border-color .2s,transform .15s}.social-card:hover{border-color:var(--accent);transform:translateY(-2px)}.social-icon{font-size:28px}.social-info{display:flex;flex-direction:column;flex:1}.social-name{font-size:15px;font-weight:600}.social-platform{font-size:13px;color:var(--text-muted)}.social-arrow{color:var(--text-muted)}.about-disclaimer{padding-top:20px;border-top:1px solid var(--border)}.result-star-banner{padding:12px 20px;background:#ffd7001f;border-radius:var(--radius);color:gold;font-weight:600;text-align:center;margin-bottom:20px}.section-badge{display:inline-block;font-size:12px;padding:2px 10px;background:#3b82f626;color:var(--accent);border-radius:10px;margin-bottom:8px}.hero-buttons{display:flex;gap:12px;justify-content:center;margin-bottom:12px}.limited-badge{color:gold;font-weight:600;font-size:13px}.limited-hint{color:var(--text-muted);font-size:13px}@media (max-width: 768px){.sections-grid{grid-template-columns:1fr}.about-stats{flex-direction:column;gap:12px}.social-grid{grid-template-columns:1fr}.hero-buttons{flex-direction:column}}.sleep-intro{font-size:15px;line-height:1.7;color:var(--text-secondary);margin-bottom:8px}.sleep-hl{color:var(--accent);font-weight:600}.sleep-section{margin-bottom:28px}.sleep-section h2{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:12px}.sleep-sounds{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.sleep-sound-card{display:flex;flex-direction:column;gap:4px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);text-align:left;cursor:pointer;color:var(--text-primary);transition:border-color .2s,transform .15s,background .2s}.sleep-sound-card:hover{border-color:var(--accent);transform:translateY(-2px)}.sleep-sound-card.active{border-color:var(--accent);background:var(--accent-light)}.sleep-sound-name{font-size:15px;font-weight:600}.sleep-sound-desc{font-size:12px;color:var(--text-muted);line-height:1.5}.sleep-custom{display:flex;gap:10px;margin-top:14px}.sleep-input{flex:1;padding:10px 14px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:14px;font-family:var(--font)}.sleep-input:focus{outline:none;border-color:var(--accent)}.sleep-controls{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.sleep-volume{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-secondary)}.sleep-volume input[type=range]{width:160px;accent-color:var(--accent)}.sleep-timer-presets{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}.sleep-timer-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.sleep-min-input{width:80px;flex:none}.sleep-min-label{font-size:14px;color:var(--text-secondary)}.sleep-timer-display{margin-top:12px;font-size:15px;font-weight:600;color:var(--accent);min-height:22px}.sleep-lock-toggle{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;color:var(--text-secondary);cursor:pointer}.sleep-lock-toggle input{accent-color:var(--accent);width:16px;height:16px}.sleep-note{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:12px}.sleep-tip{background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);padding:16px}.sleep-tip p{font-size:13px;line-height:1.7;color:var(--text-secondary);margin:0}.sleep-tip code{background:var(--bg-card-hover);padding:2px 6px;border-radius:4px;font-size:12px;color:var(--accent)}.sleep-lock-overlay{position:fixed;top:0;right:0;bottom:0;left:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;animation:sleep-fade 1.2s ease}@keyframes sleep-fade{0%{opacity:0}to{opacity:1}}.sleep-lock-inner{text-align:center;color:#2a2a3a;-webkit-user-select:none;user-select:none}.sleep-lock-moon{font-size:56px;margin-bottom:16px;filter:grayscale(1) brightness(.6)}.sleep-lock-title{font-size:22px;font-weight:700;color:#3a3a4a;margin:0 0 8px}.sleep-lock-sub{font-size:14px;color:#2a2a3a;margin:0}.sleep-helper-card{border:1px dashed var(--accent, #6366F1);background:#6366f10f}.sleep-helper-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}.sleep-helper-pill{display:inline-flex;align-items:center;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;color:#fff;background:#9ca3af}.sleep-helper-pill.online{background:#10b981}.sleep-helper-pill.offline{background:#ef4444}.sleep-tips{margin:8px 0 0;padding-left:20px;font-size:13px;line-height:1.7;color:var(--text-secondary)}.sleep-tips code,.sleep-note code{background:#6366f11f;padding:1px 5px;border-radius:4px;font-size:12px}.sleep-service-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed rgba(99,102,241,.4)}.sleep-service-label{font-size:14px;color:var(--text-secondary)}.sleep-service-label b{color:var(--text-primary)}.sleep-service-label b.svc-on{color:#10b981}.sleep-service-label b.svc-off{color:#ef4444}#sleep-service-msg{margin:10px 0 0;font-size:13px;line-height:1.6;color:var(--text-secondary)}</style>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
